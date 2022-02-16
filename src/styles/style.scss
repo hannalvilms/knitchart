@@ -4,36 +4,87 @@ $text: #646F72;
 $lightShadow: 0 0 7px 0 #5050505d;
 $InputAndButtons: #F8F8F8;
 $mainFont: 'Ageya', serif;
+$secondaryFont: 'Open Sans Condensed', sans-serif;
+//Wheel
+$wheelSize: 400px;
+$sliceSpacing: 45px;
+$wheelDetails: #7F8A8E;
+$wheelDarkerColor: #9BA7AA;
+$wheelLighterColor: #FFF;
+$PI: 3.14159265358979;
+$spinningDuration: 4s;
+$nbItem: 0;
+$itemNb: 0;
+$selectedItem: 0;
+$nbTurn: 5;
+$sliceWidth: calc(#{$PI} * #{$wheelSize} + 800px / 2);
 
+:root {
+    --nb-item: #{$nbItem};
+    --item-nb: #{$itemNb};
+    --selected-item: #{$selectedItem};
+}
 @font-face {
     font-family: 'Ageya';
     src: url('./fonts/Ageya-Regular.ttf');
+}
+
+//Keyframes
+@keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
 }
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
-@mixin flex-column {
+
+//Mixins
+@mixin flex-dir ($dir) {
     display: flex;
-    flex-direction: column;
+    flex-direction: $dir;
 }
-@mixin flex-row {
-    display: flex;
-    flex-direction: row;
+@mixin align-justify ($align, $justify) {
+    align-items: $align;
+    justify-content: $justify;
 }
 @mixin flex-row-space-between {
-    @include flex-row();
+    @include flex-dir(row);
     justify-content: space-between;
 }
-@mixin uppercase-open-sans {
-    font-family: 'Open Sans Condensed', sans-serif;
+@mixin buttons-inputs {
+    border: none;
+    border-radius: 10px;
+    background: $InputAndButtons;
+    box-shadow: $lightShadow;
+    outline: none;
+}
+@mixin uppercase-secondary {
+    font-family: $secondaryFont;
     text-transform: uppercase;
 }
 @mixin small-icon {
     padding: 5px;
-    width: 30px;
+    width: 25px;
     margin: 5px;
 }
+@mixin x-button($widthHeight, $font, $padding) {
+    height: $widthHeight;
+    width: $widthHeight;
+    font-size: $font;
+    border-radius: 50%;
+    background-color: $text;
+    color: $background;
+    font-weight: 800;
+    box-shadow: $lightShadow;
+    padding: $padding;
+}
+@mixin center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 
 #root, html {
     height: 100%;
@@ -52,19 +103,134 @@ h1 {
 nav {
     @include flex-row-space-between();
     padding-top: 15px;
+    position: relative;
+    z-index: 100;
     img {
         height: 40px;
     }
-    a {
-        font-family: $mainFont;
+    a, h3, Link {        
         color: $text !important;
+        cursor: pointer;
+        font-family: $mainFont;
+        font-size: 15px;
+        padding: 8px 16px;
+        margin: 0;
     }
     .header-logo {
         z-index: 15;
     }
     .nav {
-        justify-content: flex-end;
+        @include flex-dir(row);
+        @include align-justify(center, flex-end);
     }
+}
+
+//Navigation nav wheel div
+.nav-wheel {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 20px 0 0 20px;
+    box-shadow: 0 0 15px 0 #5050505d;
+    position: absolute;
+    right: 0;
+    width: 50%;
+    z-index: 10;
+    button {
+        @include x-button(33px, 25px, 5px 8px 9px 8px);
+        position: absolute;
+        top: 15px;
+        right: 16px;
+        z-index: 100;
+    }
+    h2 { 
+        font-family: $mainFont;
+        color: $text !important;
+        font-size: 35px;
+        text-align: center;
+        margin: 60px 50px 40px;
+    }
+}
+
+//https://codesandbox.io/s/github/hadriengerard/spinning-wheel-game-react?file=/src/components/wheel/index.js:0-1250
+.wheel-container {
+    display: block;
+    position: relative;
+    width: calc(#{$wheelSize} + 2 * 3px);
+    height: calc(#{$wheelSize} + 2 * 3px);
+    margin: 0 auto 60px;
+}
+.wheel-container::before,
+.wheel-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: solid transparent 15px;
+} 
+.wheel-container::after {
+    right: 1px;
+    border-right-color: $wheelDetails;
+}  
+.wheel {
+    position: relative;
+    box-sizing: content-box;
+    width: $wheelSize;
+    height: $wheelSize;
+    overflow: hidden;
+    border-radius: 50%;
+    border: solid $wheelDetails 5px;
+    background-color: $wheelDarkerColor;
+    transition: transform 0.25s;
+    transform: rotate(0deg);
+    cursor: pointer;
+} 
+.wheel.spinning {
+    transition: transform $spinningDuration;
+    transform: rotate(calc(#{$nbTurn} * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
+}
+//Center of the wheel
+.wheel::after {
+    @include center();
+    position: absolute;
+    content: '';
+    background-color: $wheelDetails;
+    width: 15px;
+    height: 15px;
+    z-index: 2;
+    border-radius: 50%;
+}
+.wheel-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    transform-origin: center left;
+    transform: translateY(-50%) rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
+  
+    color: $wheelLighterColor;
+    text-align: right;
+    padding: 0 10px 0 50px;
+    display: flex;
+    justify-content: flex-end;
+    p {
+        @include uppercase-secondary();
+        margin-top: 17px;
+        margin-right: 20px;
+        font-size: 10px;
+    }
+    img {
+        height: 50px;
+    }
+}
+.wheel-item:before {
+    @include center();
+    content: '';
+    position: absolute;
+    z-index: -1;
+    opacity: 0.25;
+  
+    border: solid transparent calc(calc((#{$sliceWidth} / var(--nb-item)) - #{$sliceSpacing}) / 2);
+    border-left: solid transparent 0;
+    border-right: solid $wheelLighterColor calc(#{$wheelSize} / 2);
 }
 
 //Admin file upload
@@ -74,7 +240,7 @@ nav {
     background: $text;
 }
 form {
-    @include flex-column();
+    @include flex-dir(column);
     align-items: center;
     padding: 50px 0;
 }
@@ -103,9 +269,8 @@ form {
     column-count: 6;
     column-gap: 10px;
     .masonry-item {
-        @include flex-row();
-        justify-content: center;
-        align-items: center;
+        @include flex-dir(row);
+        @include align-justify(center, center);
         margin: 0;
         grid-template-rows: 1fr auto;
         margin-bottom: 10px;
@@ -130,7 +295,6 @@ form {
     background: $text;
     border: none;
     position: absolute;
-
 }
 
 //Chart maker
@@ -142,7 +306,7 @@ form {
     width: 100%;
     top: 0;
     .back {
-        @include flex-row();
+        @include flex-dir(row);
         align-items: center;
         margin: 100px auto 30px;
         img {
@@ -150,28 +314,24 @@ form {
             height: auto;
         }
         h6 {
-            @include uppercase-open-sans();
+            @include uppercase-secondary();
             font-size: 15px;
             margin: 0;
         }
     }    
     h2 {
-        @include uppercase-open-sans();
-        font-size:20px;
+        @include uppercase-secondary();
+        font-size:18px;
         margin: 0;
     }
-
     .all-icons {
-        box-shadow: $lightShadow;
-        background-color: $InputAndButtons;
+        @include buttons-inputs();
         margin-top: 30px;
-        border-radius: 10px;
         padding: 5px 23px;
         height: 10%;
         .icons {
+            @include align-justify(center, center);
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-wrap: wrap;
             button:disabled {
                 img {
@@ -188,13 +348,11 @@ form {
         padding: 0;
     }
     .toggle-knitting-mode {
-        margin: 20px 0 30px;
+        margin: 0 0 20px;
         padding: 0;
         .knitting-mode-rows {
             div {
-                border-radius: 10px;
-                box-shadow: $lightShadow;
-                background-color: $InputAndButtons;
+                @include buttons-inputs();
                 padding: 5px 10px;
                 margin: 0 10px;
             }
@@ -209,7 +367,11 @@ form {
             width: 60px;
             height: 34px;
             position: relative;
-          }
+        }
+        svg {
+            height: 27px;
+            color: $text;
+        }
     }
     .toggle-symbol-mode img, .toggle-knitting-mode img {
         padding: 0;
@@ -230,17 +392,14 @@ form {
     }
     .columns-rows {
         margin-top: 15px;
-        @include flex-row();
+        @include flex-dir(row);
         #cols, #rows {
-            @include uppercase-open-sans();
-            outline: none;
-            background: $InputAndButtons;
-            border: none;
+            @include uppercase-secondary();
+            @include buttons-inputs();
             border-radius: 10px;
             width: 70%;
             margin: 0 auto;
             padding: 3px 7px;
-            box-shadow: $lightShadow;
         }
         label {
             font-size:15px;
@@ -260,7 +419,7 @@ form {
                 max-width: 90%;
             }
             .chrome-picker {
-                font-family: 'Open Sans Condensed', sans-serif !important;
+                font-family: $secondaryFont;
                 position: absolute;
                 margin-top: 40px;
                 box-shadow: $lightShadow !important;
@@ -269,35 +428,26 @@ form {
                 animation: fadein 1s;
             }
             button {
-                width: 25px;
-                height: 25px;
-                border-radius: 50%;
-                background-color: $text;
-                color: $background;
-                font-weight: 800;
-                font-size: 22px;
-                padding: 5px 5px 7px 5px;
-                margin-top: 5px;
-                box-shadow: $lightShadow;
+                @include x-button(25px, 22px, 3px 5px 7px 5px);
+                margin-top: 3px;
             }
         }
     }        
 }
 
 label {
-    @include uppercase-open-sans();
+    @include uppercase-secondary();
     font-size: 20px;
 }
 #title, select {
-    outline: none;
-    font-family: 'Open Sans Condensed', sans-serif;
-    background: $InputAndButtons;
-    border: none;
-    border-radius: 10px;
+    @include buttons-inputs();
+    font-family: $secondaryFont;
     width: 100%;
     margin: 0 auto;
     padding: 3px 7px;
-    box-shadow: $lightShadow;
+}
+select {
+    padding: 0 7px;
 }
 
 button {
@@ -306,81 +456,58 @@ button {
     width: max-content;
 }
 
-
-
-.toggle-thumb {
-    box-shadow: $lightShadow;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $InputAndButtons;
-    border-radius: 40px;
-    cursor: pointer;
+.active {
+    visibility: visible;
+    margin: top 0;
+    animation: fadein 1s linear;
 }
-.toggle-thumb:before {
-    content: "";
-    height: 26px;
-    width: 26px;
-    position: absolute;
-    left: 4px;
-    bottom: 4px;
-    border-radius: 50%;
-    background-color: #687477;
-    transition: .4s all ease;
-}
-.checkbox {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.checkbox:checked + .toggle-thumb:before, .proov {
-    transform: translateX(26px);    
+.inactive {
+    visibility: hidden;
+    animation: fadeout 0.5s linear;
+    transition: visibility 0.5s linear;
 }
 
 .random-chart, .download {
-    @include uppercase-open-sans();
-    box-shadow: $lightShadow;
-    border-radius: 10px;
-    background-color: $InputAndButtons;
-    padding: 0 15px 0 5px;
+    @include uppercase-secondary();
+    @include buttons-inputs();
+    padding: 5px 15px 5px 5px;
     margin: 10px 0 20px;
+    width: fit-content;
+    height: fit-content;
     img {
         @include small-icon();
         margin: 0 !important;
     }
 }
+.toolbar-bottom-buttons {
+    padding: 0;
+}
 
-.col-8 {
+.col-lg-8 {
     width: 100%;
     min-height: 100%;
     position: absolute;
     #grid {
+        
+        @include align-justify(flex-start, space-around);
         margin: 10% 10% auto;
         background-color: $background;
         min-width: 100%;
         display: flex;
-        justify-content: space-around;
-        align-items: flex-start;
     }
     .rows {
-        @include flex-column();
+        @include flex-dir(column);
+        @include align-justify(center, space-between);
         padding: 40px;
-        justify-content: space-between;
         position: absolute;
     }
 }
 
 .rendered-row {
-    @include flex-row();
+    @include flex-dir(row);
     width: fit-content;
     .stich {
-        border: 1px solid lightgrey;
+        border: 1px solid #e2e2e2;
         text-align: center;
     }
     .stich::selection {
@@ -391,27 +518,21 @@ button {
 //React select 
 .selected {
     opacity: 1 !important;
-    border: 1px solid darkmagenta;
 }
 .rCS154w68a {
-    border: 1px solid rgb(173, 99, 161) !important;
-    background: rgba(177, 125, 170, 0.5) !important;
+    border: 1px solid rgb(100, 111, 114) !important;
+    background: rgba(100, 111, 114, 0.3) !important;
 }
 
-.knitting-mode-rows {
-    display: flex;
-    justify-content: center;
-}
 //selected row
 .column {
     display: flex;
 }
 
-#tooltip, button, .wrapper {
-  display: flex;
-  align-items: center;
+#tooltip, button, .wrapper, .knitting-mode-rows {
+    @include align-justify(center, center);
+    display: flex;
 }
-
 
 //Toolbar tooltips
 .wrapper {
@@ -427,3 +548,87 @@ button {
         font-size: 10px;
     }
 }
+
+@media screen and (max-width: 767px) {
+    .nav-wheel.active {
+        z-index: 15;
+    }
+    label {
+        font-size: 15px;
+    }
+    .nav-wheel {
+        width: 90%;
+    }
+    .col-lg-8, .toolbar {
+        position: relative;
+    }
+    #grid {
+        min-width: auto !important;
+        margin: auto !important;
+    }
+    .back-col-row, .colors, .all-icons {
+        margin: 0 auto;
+    }
+
+    #title, #cols, #rows, select {
+        height: 25px;
+    }
+    .chart-maker {
+        .row {
+            background-color: $toolbarBg;
+            padding-left: initial;
+            margin: 0 auto;
+        }
+        .row>* {
+            padding: initial;
+        }
+        h2 {
+            font-size: 15px;
+        }
+
+        .toggle-and-title {
+            margin-bottom: 10px;
+        }
+        .toggle-symbol-mode, .toggle-knitting-mode {
+            margin: 20px auto!important;
+            width: 30%;
+        }
+        .knitting-mode-rows {
+            div {
+            height: 25px;
+            padding: 0 10px !important;
+            }
+        }
+        .toolbar {
+            .all-icons {
+                padding: 5px;
+                margin-top: 20px;
+                height: auto;
+            }
+            .columns-rows {
+                margin-top: 10px;
+            }
+            .colors .picked-colors button {
+                margin-top: 0 !important;
+                height: 23px !important;
+                width: 23px !important;
+            }
+        }
+        .circle-picker {
+            max-width: 100% !important;
+        }
+        .circle-picker span div {
+            width: 23px !important;
+            height: 23px !important;
+        }
+        .toolbar-bottom-buttons {
+            @include flex-dir(row);
+        }
+        .random-chart, .download {
+            margin: 10px auto 20px;
+            width: 35%;
+            font-size: 15px;
+            padding: 2px 15px 2px 5px;
+        }
+    }
+  }

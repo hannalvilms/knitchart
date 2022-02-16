@@ -4,13 +4,15 @@ import { ChromePicker, CirclePicker } from "react-color";
 import Selecto from "react-selecto";
 import $ from "jquery";
 import Tooltip from "../comps/Tooltip";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
+import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
 //Icons
 import back from "../img/left.png";
 import removeColor from "../img/removeColors.png";
 import move from "../img/all-directions.png";
 import fill from "../img/fill.png";
-import knitMode from "../img/art-and-design.png";
 import zoomIn from "../img/zoom-in.png";
 import zoomOut from "../img/zoom-out.png";
 import getRandom from "../img/surprise.png";
@@ -25,21 +27,7 @@ import Outline from "../img/outline.png";
 import noSymbolColor from "../img/removeSymbolColors.png";
 import removeOutline from "../img/removeOutline.png";
 import select from "../img/selection.png";
-import greenSymbol from "../img/symbol-green.png";
-import redSymbol from "../img/symbol-red.png";
-import knittingGreen from "../img/knitting-green.png";
-import knittingRed from "../img/knitting-red.png";
-//Spinning wheel imgs
-import scarf from "../img/scarf.png";
-import cardigan from "../img/cardigan.png";
-import hat from '../img/hat.png';
-import pillow from '../img/pillow.png';
-import top from '../img/top.png';
-import socks from '../img/socks.png';
-import sweater from '../img/sweater.png';
-import xmasSweater from '../img/x-sweater.png';
-import mittens from '../img/mittens.png';
-import blanket from '../img/blanket.png';
+
 function Create() {
   //Column, row, title states
   let [cols, setCols] = useState([0]);
@@ -162,7 +150,6 @@ function Create() {
       element[i].innerHTML = "";
     }
   };
-const [checked, setChecked] = useState(true);
   //Handle knitting mode activation
   const activateKnittingMode = () => {
     if (knittedRow === 0 || knittedRow > rows) {
@@ -170,16 +157,6 @@ const [checked, setChecked] = useState(true);
       showRow = 1;
       setShowRow(showRow);
       setKnittingMode(true);
-      setChecked(true)
-      /*const pr = window.getComputedStyle(
-        document.querySelectorAll('.toggle-thumb')[1], '::before'
-      );
-      console.log(pr.transform);
-      pr.transform = 'translateX(0px)'*/
-      console.log(document.querySelectorAll('.toggle-thumb::before'));
-      document.querySelectorAll('.toggle-thumb');
-      //window.getComputedStyle(document.querySelectorAll('.togglt-thumb'), '::before').style
-      //document.getElementsByClassName('.checkbox:checked .toggle-thumb:before')[1].style.transform = 'translateX(0)';
     } else {
       for (let i = 0; i < rows; i++) {
         let renderedRow = document.querySelectorAll(".rendered-row");
@@ -257,7 +234,6 @@ const [checked, setChecked] = useState(true);
       e.target.innerHTML = symbol;
     }
   };
-
 
   //handle selected stiches' opacity
   const handleSelect = () => {
@@ -485,12 +461,11 @@ const [checked, setChecked] = useState(true);
     }
   };
 
-
   return (
     <div className="chart-maker">
       <div className="row">
-        <div className="col-4 toolbar row">
-          <div className='col-10 back-col-row'>
+        <div className="col-lg-4 col-md-5 col-sm-12 toolbar row">
+          <div className="col-10 back-col-row">
             <div className="back">
               <img src={back} />
               <h6>Back</h6>
@@ -546,7 +521,7 @@ const [checked, setChecked] = useState(true);
               <CirclePicker
                 colors={colors}
                 color={circleColor}
-                circleSize={35}
+                circleSize={30}
                 onChangeComplete={(value) => {
                   setCircleColor(value.hex);
                 }}
@@ -569,7 +544,7 @@ const [checked, setChecked] = useState(true);
           </div>
 
           <div className="all-icons col-10">
-              <div className="icons">
+            <div className="icons">
               <button
                 onClick={() => {
                   initBorder("lightgrey");
@@ -708,28 +683,28 @@ const [checked, setChecked] = useState(true);
           <div className="col-10 toggle-symbol-mode">
             <div className="toggle-and-title">
               <h2>Symbol View</h2>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  onClick={() => {
-                    toggle(symbolMode, setSymbolMode);
+              <button
+                onClick={() => {
+                  toggle(symbolMode, setSymbolMode);
+                }}
+                disabled={selected ? false : true}
+              >
+                <FontAwesomeIcon
+                  style={{
+                    visibility: symbolMode ? "visible" : "hidden",
+                    position: "absolute",
                   }}
-                  onChange={() => setChecked(!checked)}
-                  disabled={selected ? false : true}
+                  icon={faToggleOn}
                 />
-                <span className="toggle-thumb">
-                  <img src={greenSymbol} />
-                  <img src={redSymbol} />
-                </span>
-              </label>
+                <FontAwesomeIcon
+                  style={{
+                    visibility: !symbolMode ? "visible" : "hidden",
+                  }}
+                  icon={faToggleOff}
+                />
+              </button>
             </div>
-            <div
-              style={{
-                visibility: symbolMode === true ? "hidden" : "visible",
-                marginTop: symbolMode === true ? "-40px" : "0",
-              }}
-            >
+            <div className={symbolMode ? "inactive" : "active"}>
               <select
                 id="stitchSelect"
                 onChange={(e) => {
@@ -751,31 +726,35 @@ const [checked, setChecked] = useState(true);
           <div className="col-10 toggle-knitting-mode">
             <div className="toggle-and-title">
               <h2>Knitting Mode</h2>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  onClick={() => {
-                    activateKnittingMode();
-                    toggle(knittingMode, setKnittingMode);
-                    bordersAfterKnittingMode();
-                    //document.querySelector('.proov').style.transform('translateX(26px)')
+              <button
+                onClick={() => {
+                  activateKnittingMode();
+                  toggle(knittingMode, setKnittingMode);
+                  bordersAfterKnittingMode();
+                }}
+                disabled={selected ? false : true}
+              >
+                <FontAwesomeIcon
+                  style={{
+                    visibility: knittingMode ? "visible" : "hidden",
+                    position: "absolute",
                   }}
-                  disabled={selected ? false : true}
+                  icon={faToggleOn}
                 />
-                <span className="toggle-thumb">
-                  <span className='proov'/>
-                  <img src={knittingGreen} />
-                  <img src={knittingRed} />
-                </span>
-              </label>
+                <FontAwesomeIcon
+                  style={{
+                    visibility: !knittingMode ? "visible" : "hidden",
+                  }}
+                  icon={faToggleOff}
+                />
+              </button>
             </div>
             <div
-              className="knitting-mode-rows"
-              style={{
-                visibility: knittingMode === true ? "hidden" : "visible",
-                marginTop: knittingMode === true ? "-40px" : "0",
-              }}
+              className={
+                knittingMode
+                  ? "inactive knitting-mode-rows"
+                  : "active knitting-mode-rows"
+              }
             >
               <button
                 onClick={() => {
@@ -794,28 +773,30 @@ const [checked, setChecked] = useState(true);
               </button>
             </div>
           </div>
-          <button
-            className="random-chart col-lg-7 col-md-10"
-            onClick={() => {
-              generateRandChart(circleColor);
-            }}
-            disabled={selected ? false : true}
-          >
-            <img src={getRandom} />
-            Generate Random chart
-          </button>
+          <div className='toolbar-bottom-buttons'>
+            <button
+              className="random-chart"
+              onClick={() => {
+                generateRandChart(circleColor);
+              }}
+              disabled={selected ? false : true}
+            >
+              <img src={getRandom} />
+              Generate Random chart
+            </button>
 
-          <button
-            className="download col-lg-6 col-md-10"
-            onClick={() => {
-              handleDownloadImage();
-            }}
-          >
-            <img src={download} />
-            Download as Image
-          </button>
+            <button
+              className="download"
+              onClick={() => {
+                handleDownloadImage();
+              }}
+            >
+              <img src={download} />
+              Download as Image
+            </button>
+          </div>
         </div>
-        <div className="col-8">
+        <div className="col-lg-8 col-md-7 col-sm-7">
           {!selected && (
             <Selecto
               dragContainer={".rows"}

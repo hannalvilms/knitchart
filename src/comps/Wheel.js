@@ -22,15 +22,14 @@ const Wheel = (props) => {
         '--selected-item': selectedItem,
     };
     const spinning = selectedItem !== null ? 'spinning' : '';
-    console.log(selectedItem)
 
     return (
         <div className="wheel-container">
             <div className={`wheel ${spinning}`} style={wheelVars} onClick={selectItem}>
                 {props.items.map((item, index) => (
-                    
                 <div className="wheel-item" key={index} style={{ '--item-nb': index }}>
-                    <img src={item}/>
+                    <p>{item.name}</p>
+                    <img src={item.items}/>
                 </div>
                 ))}
             </div>
