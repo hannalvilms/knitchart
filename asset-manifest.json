@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/knitchart/static/css/main.cb577bcc.css",
-    "main.js": "/knitchart/static/js/main.d803581c.js",
+    "main.css": "/knitchart/static/css/main.f7815ae1.css",
+    "main.js": "/knitchart/static/js/main.7170ac21.js",
     "static/js/787.9369eeef.chunk.js": "/knitchart/static/js/787.9369eeef.chunk.js",
     "static/media/x-sweater.png": "/knitchart/static/media/x-sweater.14a2c7d84cb9b874ed0b.png",
     "static/media/sweater.png": "/knitchart/static/media/sweater.48461305535ef1dc9b7d.png",
@@ -32,12 +32,12 @@
     "static/media/removeOutline.png": "/knitchart/static/media/removeOutline.e0f88f6285bb802bcaf9.png",
     "static/media/download.png": "/knitchart/static/media/download.d23790cafb4468d0dc2e.png",
     "index.html": "/knitchart/index.html",
-    "main.cb577bcc.css.map": "/knitchart/static/css/main.cb577bcc.css.map",
-    "main.d803581c.js.map": "/knitchart/static/js/main.d803581c.js.map",
+    "main.f7815ae1.css.map": "/knitchart/static/css/main.f7815ae1.css.map",
+    "main.7170ac21.js.map": "/knitchart/static/js/main.7170ac21.js.map",
     "787.9369eeef.chunk.js.map": "/knitchart/static/js/787.9369eeef.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cb577bcc.css",
-    "static/js/main.d803581c.js"
+    "static/css/main.f7815ae1.css",
+    "static/js/main.7170ac21.js"
   ]
 }
