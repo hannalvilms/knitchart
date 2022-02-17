@@ -7,6 +7,7 @@ $mainFont: 'Ageya', serif;
 $secondaryFont: 'Open Sans Condensed', sans-serif;
 //Wheel
 $wheelSize: 400px;
+$wheelSizeSmall: 300px;
 $sliceSpacing: 45px;
 $wheelDetails: #7F8A8E;
 $wheelDarkerColor: #9BA7AA;
@@ -18,6 +19,7 @@ $itemNb: 0;
 $selectedItem: 0;
 $nbTurn: 5;
 $sliceWidth: calc(#{$PI} * #{$wheelSize} + 800px / 2);
+$sliceWidthSmall: calc(#{$PI} * #{$wheelSizeSmall} + 800px / 2);
 
 :root {
     --nb-item: #{$nbItem};
@@ -85,6 +87,17 @@ $sliceWidth: calc(#{$PI} * #{$wheelSize} + 800px / 2);
     transform: translate(-50%, -50%);
 }
 
+@keyframes animation-slide-in-left {
+    0% {
+        transform: translate(-100%,0);
+    }
+  
+    100% {
+        transform: translate(0,0);
+    }
+  }
+  
+
 
 #root, html {
     height: 100%;
@@ -134,6 +147,7 @@ nav {
     right: 0;
     width: 50%;
     z-index: 10;
+    overflow: hidden;
     button {
         @include x-button(33px, 25px, 5px 8px 9px 8px);
         position: absolute;
@@ -211,6 +225,7 @@ nav {
     padding: 0 10px 0 50px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     p {
         @include uppercase-secondary();
         margin-top: 17px;
@@ -380,6 +395,7 @@ form {
     }
 }
 .toolbar {
+    animation: animation-slide-in-left 3s;
     background-color: $toolbarBg;
     z-index: 10;
     min-height: 100%;
@@ -418,14 +434,17 @@ form {
                 width: fit-content !important;
                 max-width: 90%;
             }
+            .chrome-div {
+                display: contents;
+            }
             .chrome-picker {
                 font-family: $secondaryFont;
                 position: absolute;
-                margin-top: 40px;
+                margin-top: 30px;
                 box-shadow: $lightShadow !important;
-                right: 70px;
+                right: 55px;
                 z-index: 10;
-                animation: fadein 1s;
+                animation: fadein 0.5s;
             }
             button {
                 @include x-button(25px, 22px, 3px 5px 7px 5px);
@@ -459,7 +478,7 @@ button {
 .active {
     visibility: visible;
     margin: top 0;
-    animation: fadein 1s linear;
+    animation: fadein 0.5s linear;
 }
 .inactive {
     visibility: hidden;
@@ -474,6 +493,7 @@ button {
     margin: 10px 0 20px;
     width: fit-content;
     height: fit-content;
+    color: $text;
     img {
         @include small-icon();
         margin: 0 !important;
@@ -548,6 +568,9 @@ button {
         font-size: 10px;
     }
 }
+@media screen and (max-width: 1024px) {
+
+}
 
 @media screen and (max-width: 767px) {
     .nav-wheel.active {
@@ -557,6 +580,7 @@ button {
         font-size: 15px;
     }
     .nav-wheel {
+        background-color: rgba(255, 255, 255, 0.8);
         width: 90%;
     }
     .col-lg-8, .toolbar {
@@ -588,6 +612,11 @@ button {
 
         .toggle-and-title {
             margin-bottom: 10px;
+            button:disabled {
+                svg {
+                    opacity: 0.3;
+                }
+            }
         }
         .toggle-symbol-mode, .toggle-knitting-mode {
             margin: 20px auto!important;
@@ -616,6 +645,9 @@ button {
         }
         .circle-picker {
             max-width: 100% !important;
+            .chrome-picker {
+                right: 65px;
+            }
         }
         .circle-picker span div {
             width: 23px !important;
@@ -631,4 +663,24 @@ button {
             padding: 2px 15px 2px 5px;
         }
     }
+  }
+
+  @media screen and (max-width: 576px) {
+    .wheel-container {
+        width: calc(#{$wheelSizeSmall} + 2 * 3px);
+        height: calc(#{$wheelSizeSmall} + 2 * 3px);
+    }
+    .wheel {
+        width: $wheelSizeSmall;
+        height: $wheelSizeSmall;
+    } 
+    .wheel-item {
+        img {
+            height:30px;
+        }
+    }
+    .wheel-item:before {
+        border: solid transparent calc(calc((#{$sliceWidth} / var(--nb-item)) - #{$sliceSpacing}) / 2);
+        border-right: solid $wheelLighterColor calc(#{$wheelSize} / 2);
+    } 
   }

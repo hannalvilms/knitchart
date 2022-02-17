@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 //import Login from './pages/Login';
@@ -9,7 +9,7 @@ import logo from "./img/knitchart-logo.png";
 //import { auth } from './firebase-config';
 import Admin from "./pages/Admin";
 import Wheel from "./comps/Wheel";
-
+import useOutsideClick from "./hooks/useOutsideClick";
 //Spinning wheel imgs
 import scarf from "./img/scarf.png";
 import cardigan from "./img/cardigan.png";
@@ -32,18 +32,8 @@ const AllRoutes = () => {
     })
   }*/
   let [isShown, setIsShown] = useState(true);
-  let places = [
-    scarf,
-    cardigan,
-    hat,
-    pillow,
-    top,
-    socks,
-    sweater,
-    xmasSweater,
-    mittens,
-    blanket,
-  ];
+  const wheelRef = useRef();
+
   let wheelItems = [
     {
       items: scarf,
@@ -90,6 +80,12 @@ const AllRoutes = () => {
     setMode(!mode);
   };
 
+  useOutsideClick(wheelRef, () => {
+    if (!isShown) {
+      setIsShown((isShown) => !isShown);
+    }
+  });
+
   return (
     <div>
       <div className="container">
@@ -118,6 +114,7 @@ const AllRoutes = () => {
         </div>
       </div>
       <div
+        ref={wheelRef}
         className={isShown ? "inactive nav-wheel" : "active nav-wheel"}
       >
         <button onClick={() => toggle(isShown, setIsShown)}>×</button>

@@ -1,11 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+//For downloading the chart
 import html2canvas from "html2canvas";
+//Color pickers
 import { ChromePicker, CirclePicker } from "react-color";
+//For selecting the stiches
 import Selecto from "react-selecto";
+
 import $ from "jquery";
 import Tooltip from "../comps/Tooltip";
+//Hook to handle outside clicks & keypresses
+import useOutsideClick from "../hooks/useOutsideClick";
+import useKeypress from "../hooks/useKeypress";
+
+//Fontawesome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
 //Icons
@@ -73,10 +81,13 @@ function Create() {
   let renderedRow = document.querySelectorAll(".rendered-row");
   let element = document.getElementsByClassName("stich");
   let [symbol, setSymbol] = useState("Ⅰ");
-  const printRef = useRef();
+  //refs
+  const colorPickerRef = useRef();
+  const gridRef = useRef();
+  const gridRefTwo = useRef();
   //Styles
   let [stichHeightWidth, setStichHeightWidth] = useState(25);
-  //Chart height and width -> for downloading the image
+  //Chart height and width
   const chartHeightWidth = {
     height: stichHeightWidth * rows + "px",
     width: stichHeightWidth * cols + "px",
@@ -161,7 +172,6 @@ function Create() {
       for (let i = 0; i < rows; i++) {
         let renderedRow = document.querySelectorAll(".rendered-row");
         renderedRow[knittedRow - 1].style.border = "4px solid #992E2B";
-        renderedRow[knittedRow - 1].style.marginLeft = "-4px";
       }
     }
   };
@@ -275,7 +285,7 @@ function Create() {
 
   //https://www.robinwieruch.de/react-component-to-image/
   const handleDownloadImage = async () => {
-    const element = printRef.current;
+    const element = gridRef.current;
     const canvas = await html2canvas(element);
     const data = canvas.toDataURL("image/jpg");
     const link = document.createElement("a");
@@ -291,6 +301,7 @@ function Create() {
     }
   };
 
+  //Color half of the stiches in random
   const randomChart = (backgroundColor) => {
     let halfOfStiches = (cols * rows) / 2;
     for (let i = 0; i < halfOfStiches; i++) {
@@ -300,6 +311,8 @@ function Create() {
       }
     }
   };
+
+  //Generate the random chart
   const generateRandChart = (backgroundColor) => {
     if (random) {
       toggle(random, setRandom);
@@ -309,6 +322,181 @@ function Create() {
       randomChart(backgroundColor);
     }
   };
+
+  //Group the selected divs into parent div
+  const groupSelected = () => {
+    if (!selected && mouseIsDown) {
+      for (let i = 0; i < rows; i++) {
+        $(".nr" + i)
+          .find(".selected")
+          .wrapAll("<div class='column' />");
+      }
+    }
+    if (!($(".selected").parent() === "<div class='column' />")) {
+      unselect();
+      for (let i = 0; i < rows; i++) {
+        $(".nr" + i)
+          .find(".selected")
+          .wrapAll("<div class='column' />");
+      }
+    }
+  };
+
+  //Remove the group parent div and children
+  const unselect = () => {
+    for (let i = 0; i < rows; i++) {
+      //unwrap contents (in this case selected class)
+      $(".column").contents().unwrap();
+      //remove div if empty
+      if (document.querySelectorAll(".column:empty")) {
+        $(".column").remove();
+      }
+    }
+  };
+
+  //Flip the selected divs
+  const rowRev = () => {
+    if (!selected) {
+      toggle(rowrev, setrowrev);
+      let column = document.querySelectorAll(".column");
+      let columnLength = column.length;
+      for (let i = 0; i < columnLength; i++) {
+        if (rowrev) {
+          column[i].style.flexDirection = "row-reverse";
+        } else {
+          column[i].style.flexDirection = "row";
+        }
+      }
+    }
+  };
+
+  //Change the border color
+  const changeBorderColor = () => {
+    borderColor = circleColor;
+    setBorderColor(borderColor);
+    for (let i = 0; i < element.length; i++) {
+      element[i].style.border = "1px solid " + borderColor;
+    }
+  };
+
+  //Reset initial borders
+  const initBorder = (color) => {
+    borderColor = color;
+    setBorderColor(borderColor);
+    for (let i = 0; i < element.length; i++) {
+      element[i].style.border = "1px solid " + color;
+    }
+    setoutlined(true);
+  };
+
+  //Outline the stiches
+  const outline = () => {
+    let column = document.querySelectorAll(".column");
+    let columnLength = column.length;
+    setoutlined(false);
+
+    //Outline the selected area
+    if (!selected) {
+      initBorder(borderColor);
+      for (let i = 0; i < columnLength; i++) {
+        if (i === 0) {
+          for (let i = 0; i < column[0].children.length; i++) {
+            column[0].children[i].style.borderTop = "2px solid red";
+          }
+        }
+        if (i === columnLength - 1) {
+          for (let i = 0; i < column[columnLength - 1].children.length; i++) {
+            column[columnLength - 1].children[i].style.borderBottom =
+              "2px solid red";
+          }
+        }
+        column[i].children[0].style.borderLeft = "2px solid red";
+        column[i].children[column[i].children.length - 1].style.borderRight =
+          "2px solid red";
+      }
+    }
+  };
+
+  //Start drag
+  const dragStart = (e) => {
+    if (!draggable) {
+      setDiffX(e.screenX - e.currentTarget.getBoundingClientRect().left);
+      setDiffY(e.screenY - e.currentTarget.getBoundingClientRect().top);
+      setDragging(true);
+    }
+  };
+
+  //End drag
+  const dragEnd = () => {
+    if (!draggable) {
+      setDragging(false);
+    }
+  };
+
+  //While dragging
+  const drag = (e) => {
+    if (dragging && !draggable) {
+      let left = e.screenX - diffX;
+      let top = e.screenY - diffY;
+      setStyles({
+        left: left,
+        top: top,
+      });
+    }
+  };
+
+  //Restart
+  const restart = () => {
+    initBorder("lightgrey");
+    removeColors();
+    removeSymbols();
+    setSelected(true);
+    for (let i = 0; i < element.length; i++) {
+      element[i].style.opacity = 1;
+      element[i].classList.remove("selected");
+      setMouseIsDown(false);
+    }
+  };
+
+  //Change symbol color
+  const symbolColor = (color) => {
+    for (let i = 0; i < element.length; i++) {
+      element[i].style.color = color;
+    }
+  };
+
+  //Detect click outside element & close it
+  useOutsideClick(colorPickerRef, () => {
+    if (showColorPicker) {
+      setShowColorPicker((showColorPicker) => !showColorPicker);
+      pushColor(colors);
+    }
+  });
+
+  useOutsideClick(gridRefTwo, () => {
+    if (!selected) {
+      setSelected((selected) => !selected);
+      handleSelect();
+    }
+  });
+
+  //Detect key press & change states
+  useKeypress("Escape", () => {
+    if (draggable) {
+      setDraggable(true);
+    }
+  });
+
+  useKeypress("Escape", () => {
+    if (selected) {
+      setSelected(true);
+      for (let i = 0; i < element.length; i++) {
+        element[i].style.opacity = 1;
+        element[i].classList.remove("selected");
+        setMouseIsDown(false);
+      }
+    }
+  });
 
   const returnRows = stichRow.map((rowI) => {
     return (
@@ -337,129 +525,6 @@ function Create() {
       </span>
     );
   });
-
-  const groupSelected = () => {
-    if (!selected && mouseIsDown) {
-      for (let i = 0; i < rows; i++) {
-        $(".nr" + i)
-          .find(".selected")
-          .wrapAll("<div class='column' />");
-      }
-    }
-    if (!($(".selected").parent() === "<div class='column' />")) {
-      unselect();
-      for (let i = 0; i < rows; i++) {
-        $(".nr" + i)
-          .find(".selected")
-          .wrapAll("<div class='column' />");
-      }
-    }
-  };
-
-  const unselect = () => {
-    for (let i = 0; i < rows; i++) {
-      //unwrap contents (in this case selected class)
-      $(".column").contents().unwrap();
-      //remove div if empty
-      if (document.querySelectorAll(".column:empty")) {
-        $(".column").remove();
-      }
-    }
-  };
-
-  const rowRev = () => {
-    if (!selected) {
-      toggle(rowrev, setrowrev);
-      let column = document.querySelectorAll(".column");
-      let columnLength = column.length;
-      for (let i = 0; i < columnLength; i++) {
-        if (rowrev) {
-          column[i].style.flexDirection = "row-reverse";
-        } else {
-          column[i].style.flexDirection = "row";
-        }
-      }
-    }
-  };
-
-  const changeBorderColor = () => {
-    borderColor = circleColor;
-    setBorderColor(borderColor);
-    for (let i = 0; i < element.length; i++) {
-      element[i].style.border = "1px solid " + borderColor;
-    }
-  };
-
-  //Reset initial borders
-  const initBorder = (color) => {
-    borderColor = color;
-    setBorderColor(borderColor);
-    for (let i = 0; i < element.length; i++) {
-      element[i].style.border = "1px solid " + color;
-    }
-    setoutlined(true);
-  };
-
-  const outline = () => {
-    let column = document.querySelectorAll(".column");
-    let columnLength = column.length;
-    setoutlined(false);
-
-    //Outline the selected area
-    if (!selected) {
-      initBorder(borderColor);
-      for (let i = 0; i < columnLength; i++) {
-        if (i === 0) {
-          for (let i = 0; i < column[0].children.length; i++) {
-            column[0].children[i].style.borderTop = "2px solid red";
-          }
-        }
-        if (i === columnLength - 1) {
-          for (let i = 0; i < column[columnLength - 1].children.length; i++) {
-            column[columnLength - 1].children[i].style.borderBottom =
-              "2px solid red";
-          }
-        }
-        column[i].children[0].style.borderLeft = "2px solid red";
-        column[i].children[column[i].children.length - 1].style.borderRight =
-          "2px solid red";
-      }
-    }
-  };
-
-  const dragStart = (e) => {
-    if (!draggable) {
-      setDiffX(e.screenX - e.currentTarget.getBoundingClientRect().left);
-      setDiffY(e.screenY - e.currentTarget.getBoundingClientRect().top);
-      setDragging(true);
-    }
-  };
-  const dragEnd = () => {
-    if (!draggable) {
-      setDragging(false);
-    }
-  };
-  const drag = (e) => {
-    if (dragging && !draggable) {
-      let left = e.screenX - diffX;
-      let top = e.screenY - diffY;
-      setStyles({
-        left: left,
-        top: top,
-      });
-    }
-  };
-  const restart = () => {
-    initBorder("lightgrey");
-    removeColors();
-    removeSymbols();
-  };
-
-  const symbolColor = (color) => {
-    for (let i = 0; i < element.length; i++) {
-      element[i].style.color = color;
-    }
-  };
 
   return (
     <div className="chart-maker">
@@ -497,6 +562,7 @@ function Create() {
               <div className="col-6">
                 <label>Rows</label>
                 <br />
+
                 <input
                   id="rows"
                   disabled={selected ? false : true}
@@ -527,7 +593,7 @@ function Create() {
                 }}
               />
               <button
-                onClick={() => {
+                onClick={(e) => {
                   setShowColorPicker((showColorPicker) => !showColorPicker);
                   pushColor(colors);
                 }}
@@ -535,10 +601,14 @@ function Create() {
                 {showColorPicker ? "×" : "+"}
               </button>
               {showColorPicker && (
-                <ChromePicker
-                  color={chromeColor}
-                  onChange={(updatedColor) => setChromeColor(updatedColor.hex)}
-                />
+                <div ref={colorPickerRef} className="chrome-div">
+                  <ChromePicker
+                    color={chromeColor}
+                    onChange={(updatedColor) =>
+                      setChromeColor(updatedColor.hex)
+                    }
+                  />
+                </div>
               )}
             </div>
           </div>
@@ -584,6 +654,7 @@ function Create() {
                   rowRev();
                 }}
                 disabled={outlined === false ? true : false}
+                disabled={!selected ? false : true}
               >
                 <Tooltip content="Flip horizontal" direction="right">
                   <img src={flip} />
@@ -773,7 +844,7 @@ function Create() {
               </button>
             </div>
           </div>
-          <div className='toolbar-bottom-buttons'>
+          <div className="toolbar-bottom-buttons">
             <button
               className="random-chart"
               onClick={() => {
@@ -796,7 +867,7 @@ function Create() {
             </button>
           </div>
         </div>
-        <div className="col-lg-8 col-md-7 col-sm-7">
+        <div className="col-lg-8 col-md-7 col-sm-7" ref={gridRefTwo}>
           {!selected && (
             <Selecto
               dragContainer={".rows"}
@@ -820,7 +891,7 @@ function Create() {
           )}
           <div id="grid">
             <div
-              ref={printRef}
+              ref={gridRef}
               style={chartHeightWidth}
               className="rows selecto-area"
               onMouseDown={(e) => dragStart(e)}

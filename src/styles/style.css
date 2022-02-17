@@ -45,6 +45,28 @@
   }
 }
 
+@-webkit-keyframes animation-slide-in-left {
+  0% {
+    -webkit-transform: translate(-100%, 0);
+            transform: translate(-100%, 0);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
+}
+
+@keyframes animation-slide-in-left {
+  0% {
+    -webkit-transform: translate(-100%, 0);
+            transform: translate(-100%, 0);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
+}
+
 #root, html {
   height: 100%;
   min-height: 100vh;
@@ -119,6 +141,7 @@ nav .nav {
   right: 0;
   width: 50%;
   z-index: 10;
+  overflow: hidden;
 }
 
 .nav-wheel button {
@@ -229,6 +252,9 @@ nav .nav {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .wheel-item p {
@@ -486,6 +512,8 @@ form {
 }
 
 .toolbar {
+  -webkit-animation: animation-slide-in-left 3s;
+          animation: animation-slide-in-left 3s;
   background-color: #E7E6E1;
   z-index: 10;
   min-height: 100%;
@@ -569,16 +597,20 @@ form {
   max-width: 90%;
 }
 
+.toolbar .colors .picked-colors .chrome-div {
+  display: contents;
+}
+
 .toolbar .colors .picked-colors .chrome-picker {
   font-family: "Open Sans Condensed", sans-serif;
   position: absolute;
-  margin-top: 40px;
+  margin-top: 30px;
   -webkit-box-shadow: 0 0 7px 0 #5050505d !important;
           box-shadow: 0 0 7px 0 #5050505d !important;
-  right: 70px;
+  right: 55px;
   z-index: 10;
-  -webkit-animation: fadein 1s;
-          animation: fadein 1s;
+  -webkit-animation: fadein 0.5s;
+          animation: fadein 0.5s;
 }
 
 .toolbar .colors .picked-colors button {
@@ -629,8 +661,8 @@ button {
 .active {
   visibility: visible;
   margin: top 0;
-  -webkit-animation: fadein 1s linear;
-          animation: fadein 1s linear;
+  -webkit-animation: fadein 0.5s linear;
+          animation: fadein 0.5s linear;
 }
 
 .inactive {
@@ -658,6 +690,7 @@ button {
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
+  color: #646F72;
 }
 
 .random-chart img, .download img {
@@ -787,6 +820,7 @@ button {
     font-size: 15px;
   }
   .nav-wheel {
+    background-color: rgba(255, 255, 255, 0.8);
     width: 90%;
   }
   .col-lg-8, .toolbar {
@@ -816,6 +850,9 @@ button {
   .chart-maker .toggle-and-title {
     margin-bottom: 10px;
   }
+  .chart-maker .toggle-and-title button:disabled svg {
+    opacity: 0.3;
+  }
   .chart-maker .toggle-symbol-mode, .chart-maker .toggle-knitting-mode {
     margin: 20px auto !important;
     width: 30%;
@@ -840,6 +877,9 @@ button {
   .chart-maker .circle-picker {
     max-width: 100% !important;
   }
+  .chart-maker .circle-picker .chrome-picker {
+    right: 65px;
+  }
   .chart-maker .circle-picker span div {
     width: 23px !important;
     height: 23px !important;
@@ -858,5 +898,23 @@ button {
     width: 35%;
     font-size: 15px;
     padding: 2px 15px 2px 5px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .wheel-container {
+    width: calc(300px + 2 * 3px);
+    height: calc(300px + 2 * 3px);
+  }
+  .wheel {
+    width: 300px;
+    height: 300px;
+  }
+  .wheel-item img {
+    height: 30px;
+  }
+  .wheel-item:before {
+    border: solid transparent calc(calc((calc(3.14159 * 400px + 800px / 2) / var(--nb-item)) - 45px) / 2);
+    border-right: solid #FFF calc(400px / 2);
   }
 }

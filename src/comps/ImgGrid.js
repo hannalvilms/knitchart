@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import useFirestore from '../hooks/useFirestore';
 import { projectFirestore } from '../firebase-config';
 import { useHref } from 'react-router-dom';
-const ImgGrid = () => {
+const ImgGrid = (props) => {
 
     function deleteFromFS(file){
         console.log(file)
@@ -22,7 +22,9 @@ const ImgGrid = () => {
                 <a href={doc.url} target='_blank'>
                     <img src={doc.url} className='masonry-content' alt='uploaded pic'/>
                 </a>
-                <button className="delete-button" onClick={() => {deleteFromFS(doc.id)}}>Delete</button>
+                {props.admin && 
+                    <button className="delete-button" onClick={() => {deleteFromFS(doc.id)}}>Delete</button>
+                }
             </div>
         ))}
         </div>

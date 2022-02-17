@@ -29,9 +29,7 @@ function Admin() {
           {file && <div>{ file.name }</div>}
         </form>
         {file && <ProgressBar file={file} setFile={setFile}/>}
-        <div>
-          <ImgGrid/>
-        </div>
+          <ImgGrid admin={'admin'}/>
       </div>
     </div>
   </div>;
