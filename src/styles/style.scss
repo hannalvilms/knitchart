@@ -280,8 +280,21 @@ form {
 }
 
 //Masonry view
+.masonry-container {
+    display: flex;
+    margin-top: 40px;
+    .title-masonry, .second-masonry {
+        width: 50%;
+    }
+    h1 {
+        font-size: 130px;
+    }
+    .second-masonry {
+        margin-left: 10px;
+    }
+}
 .masonry-wrapper {
-    column-count: 6;
+    column-count: 3;
     column-gap: 10px;
     .masonry-item {
         @include flex-dir(row);
