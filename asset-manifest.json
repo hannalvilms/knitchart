@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/knitchart/static/css/main.4f5b01aa.css",
-    "main.js": "/knitchart/static/js/main.105acc3e.js",
+    "main.css": "/knitchart/static/css/main.a39182c7.css",
+    "main.js": "/knitchart/static/js/main.c69a1649.js",
     "static/js/787.9369eeef.chunk.js": "/knitchart/static/js/787.9369eeef.chunk.js",
     "static/media/x-sweater.png": "/knitchart/static/media/x-sweater.14a2c7d84cb9b874ed0b.png",
     "static/media/sweater.png": "/knitchart/static/media/sweater.48461305535ef1dc9b7d.png",
@@ -22,7 +22,6 @@
     "static/media/zoom-in.png": "/knitchart/static/media/zoom-in.e2ae6e5f3cbb4c657807.png",
     "static/media/zoom-out.png": "/knitchart/static/media/zoom-out.736db73198751c89183f.png",
     "static/media/removeSymbols.png": "/knitchart/static/media/removeSymbols.adcb8365ba097fb877eb.png",
-    "static/media/selection.png": "/knitchart/static/media/selection.94423e8ef3ef0aede7f9.png",
     "static/media/delete.png": "/knitchart/static/media/delete.5df74a20da72700377b0.png",
     "static/media/knitchart-logo.png": "/knitchart/static/media/knitchart-logo.2984b7d94ec18d0ee00a.png",
     "static/media/removeBorderColor.png": "/knitchart/static/media/removeBorderColor.da63d0c47b25767ae7e6.png",
@@ -32,12 +31,12 @@
     "static/media/removeOutline.png": "/knitchart/static/media/removeOutline.e0f88f6285bb802bcaf9.png",
     "static/media/download.png": "/knitchart/static/media/download.d23790cafb4468d0dc2e.png",
     "index.html": "/knitchart/index.html",
-    "main.4f5b01aa.css.map": "/knitchart/static/css/main.4f5b01aa.css.map",
-    "main.105acc3e.js.map": "/knitchart/static/js/main.105acc3e.js.map",
+    "main.a39182c7.css.map": "/knitchart/static/css/main.a39182c7.css.map",
+    "main.c69a1649.js.map": "/knitchart/static/js/main.c69a1649.js.map",
     "787.9369eeef.chunk.js.map": "/knitchart/static/js/787.9369eeef.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4f5b01aa.css",
-    "static/js/main.105acc3e.js"
+    "static/css/main.a39182c7.css",
+    "static/js/main.c69a1649.js"
   ]
 }
