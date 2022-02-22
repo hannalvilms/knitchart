@@ -1,17 +1,17 @@
-$background: #F0EFEA;
-$toolbarBg: #E7E6E1;
-$text: #646F72;
+$background: #f0efea;
+$toolbarBg: #e7e6e1;
+$text: #646f72;
 $lightShadow: 0 0 7px 0 #5050505d;
-$InputAndButtons: #F8F8F8;
-$mainFont: 'Ageya', serif;
-$secondaryFont: 'Open Sans Condensed', sans-serif;
+$InputAndButtons: #f8f8f8;
+$mainFont: "Ageya", serif;
+$secondaryFont: "Open Sans Condensed", sans-serif;
 //Wheel
 $wheelSize: 400px;
 $wheelSizeSmall: 300px;
 $sliceSpacing: 45px;
-$wheelDetails: #7F8A8E;
-$wheelDarkerColor: #9BA7AA;
-$wheelLighterColor: #FFF;
+$wheelDetails: #7f8a8e;
+$wheelDarkerColor: #9ba7aa;
+$wheelLighterColor: #fff;
 $PI: 3.14159265358979;
 $spinningDuration: 4s;
 $nbItem: 0;
@@ -22,678 +22,872 @@ $sliceWidth: calc(#{$PI} * #{$wheelSize} + 800px / 2);
 $sliceWidthSmall: calc(#{$PI} * #{$wheelSizeSmall} + 800px / 2);
 
 :root {
-    --nb-item: #{$nbItem};
-    --item-nb: #{$itemNb};
-    --selected-item: #{$selectedItem};
+  --nb-item: #{$nbItem};
+  --item-nb: #{$itemNb};
+  --selected-item: #{$selectedItem};
 }
 @font-face {
-    font-family: 'Ageya';
-    src: url('./fonts/Ageya-Regular.ttf');
+  font-family: "Ageya";
+  src: url("./fonts/Ageya-Regular.ttf");
 }
 
 //Keyframes
 @keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 @keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 //Mixins
-@mixin flex-dir ($dir) {
-    display: flex;
-    flex-direction: $dir;
+@mixin flex-dir($dir) {
+  display: flex;
+  flex-direction: $dir;
 }
-@mixin align-justify ($align, $justify) {
-    align-items: $align;
-    justify-content: $justify;
+@mixin align-justify($align, $justify) {
+  align-items: $align;
+  justify-content: $justify;
 }
 @mixin flex-row-space-between {
-    @include flex-dir(row);
-    justify-content: space-between;
+  @include flex-dir(row);
+  justify-content: space-between;
 }
 @mixin buttons-inputs {
-    border: none;
-    border-radius: 10px;
-    background: $InputAndButtons;
-    box-shadow: $lightShadow;
-    outline: none;
+  border: none;
+  border-radius: 10px;
+  background: $InputAndButtons;
+  box-shadow: $lightShadow;
+  outline: none;
 }
 @mixin uppercase-secondary {
-    font-family: $secondaryFont;
-    text-transform: uppercase;
+  font-family: $secondaryFont;
+  text-transform: uppercase;
+  color: $text;
 }
 @mixin small-icon {
-    padding: 5px;
-    width: 25px;
-    margin: 5px;
+  padding: 5px;
+  width: 25px;
+  margin: 5px;
 }
 @mixin x-button($widthHeight, $font, $padding) {
-    height: $widthHeight;
-    width: $widthHeight;
-    font-size: $font;
-    border-radius: 50%;
-    background-color: $text;
-    color: $background;
-    font-weight: 800;
-    box-shadow: $lightShadow;
-    padding: $padding;
+  height: $widthHeight;
+  width: $widthHeight;
+  font-size: $font;
+  border-radius: 50%;
+  background-color: $text;
+  color: $background;
+  font-weight: 800;
+  box-shadow: $lightShadow;
+  padding: $padding;
 }
 @mixin center {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @keyframes animation-slide-in-left {
-    0% {
-        transform: translate(-100%,0);
-    }
-  
-    100% {
-        transform: translate(0,0);
-    }
+  0% {
+    transform: translate(-100%, 0);
   }
-  
 
+  100% {
+    transform: translate(0, 0);
+  }
+}
 
-#root, html {
-    height: 100%;
-    min-height: 100vh;
+#root,
+html {
+  height: 100%;
+  min-height: 100vh;
 }
 body {
-    background-color: $background;
-    color: $text;
+  background-color: $background;
+  color: $text;
 }
 h1 {
-    text-transform: uppercase;
-    font-size: 100px;
-    font-family: $mainFont;
+  text-transform: uppercase;
+  font-size: 100px;
+  font-family: $mainFont;
+}
+h3 {
+  font-size: 30px;
+  font-family: $mainFont;
 }
 //nav
 nav {
-    @include flex-row-space-between();
-    padding-top: 15px;
-    position: relative;
-    z-index: 100;
-    img {
-        height: 40px;
-    }
-    a, h3, Link {        
-        color: $text !important;
-        cursor: pointer;
-        font-family: $mainFont;
-        font-size: 15px;
-        padding: 8px 16px;
-        margin: 0;
-    }
-    .header-logo {
-        z-index: 15;
-    }
-    .nav {
-        @include flex-dir(row);
-        @include align-justify(center, flex-end);
-    }
+  @include flex-row-space-between();
+  padding-top: 15px;
+  position: relative;
+  z-index: 100;
+  img {
+    height: 40px;
+  }
+  a,
+  h3,
+  Link {
+    color: $text !important;
+    cursor: pointer;
+    font-family: $mainFont;
+    font-size: 15px;
+    padding: 8px 16px;
+    margin: 0;
+  }
+  .header-logo {
+    z-index: 15;
+  }
+  .nav {
+    @include flex-dir(row);
+    @include align-justify(center, flex-end);
+  }
 }
-
+.hamburger {
+  padding: 0 !important;
+}
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+  border-radius: 0 !important;
+  width: 27px !important;
+  height: 2px !important;
+  background-color: $text !important;
+  right: 0 !important;
+}
+.hamburger-inner::before {
+  top: -7px !important;
+}
+.hamburger-inner::after {
+  top: -14px !important;
+}
+.is-active {
+  z-index: 10 !important;
+  position: relative;
+  .hamburger-inner::before {
+    top: 0px !important;
+  }
+}
+.mobile-menu {
+  animation: fadein 0.5s;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(240, 239, 234, 0.9);
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .nav-link,
+  h3 {
+    font-size: 40px;
+    text-transform: uppercase;
+    padding: 20px;
+    text-align: center;
+  }
+}
 //Navigation nav wheel div
 .nav-wheel {
-    background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 20px 0 0 20px;
-    box-shadow: 0 0 15px 0 #5050505d;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px 0 0 20px;
+  box-shadow: 0 0 15px 0 #5050505d;
+  position: absolute;
+  right: 0;
+  width: 50%;
+  z-index: 10;
+  overflow: hidden;
+  button {
+    @include x-button(33px, 25px, 5px 8px 9px 8px);
     position: absolute;
-    right: 0;
-    width: 50%;
-    z-index: 10;
-    overflow: hidden;
-    button {
-        @include x-button(33px, 25px, 5px 8px 9px 8px);
-        position: absolute;
-        top: 15px;
-        right: 16px;
-        z-index: 100;
-    }
-    h2 { 
-        font-family: $mainFont;
-        color: $text !important;
-        font-size: 35px;
-        text-align: center;
-        margin: 60px 50px 40px;
-    }
+    top: 15px;
+    right: 16px;
+    z-index: 100;
+  }
+  h2 {
+    font-family: $mainFont;
+    color: $text !important;
+    font-size: 35px;
+    text-align: center;
+    margin: 60px 50px 40px;
+  }
 }
 
 //https://codesandbox.io/s/github/hadriengerard/spinning-wheel-game-react?file=/src/components/wheel/index.js:0-1250
 .wheel-container {
-    display: block;
-    position: relative;
-    width: calc(#{$wheelSize} + 2 * 3px);
-    height: calc(#{$wheelSize} + 2 * 3px);
-    margin: 0 auto 60px;
+  display: block;
+  position: relative;
+  width: calc(#{$wheelSize} + 2 * 3px);
+  height: calc(#{$wheelSize} + 2 * 3px);
+  margin: 0 auto 60px;
 }
 .wheel-container::before,
 .wheel-container::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    border: solid transparent 15px;
-} 
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: solid transparent 15px;
+}
 .wheel-container::after {
-    right: 1px;
-    border-right-color: $wheelDetails;
-}  
+  right: 1px;
+  border-right-color: $wheelDetails;
+}
 .wheel {
-    position: relative;
-    box-sizing: content-box;
-    width: $wheelSize;
-    height: $wheelSize;
-    overflow: hidden;
-    border-radius: 50%;
-    border: solid $wheelDetails 5px;
-    background-color: $wheelDarkerColor;
-    transition: transform 0.25s;
-    transform: rotate(0deg);
-    cursor: pointer;
-} 
+  position: relative;
+  box-sizing: content-box;
+  width: $wheelSize;
+  height: $wheelSize;
+  overflow: hidden;
+  border-radius: 50%;
+  border: solid $wheelDetails 5px;
+  background-color: $wheelDarkerColor;
+  transition: transform 0.25s;
+  transform: rotate(0deg);
+  cursor: pointer;
+}
 .wheel.spinning {
-    transition: transform $spinningDuration;
-    transform: rotate(calc(#{$nbTurn} * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
+  transition: transform $spinningDuration;
+  transform: rotate(
+    calc(
+      #{$nbTurn} * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))
+    )
+  );
 }
 //Center of the wheel
 .wheel::after {
-    @include center();
-    position: absolute;
-    content: '';
-    background-color: $wheelDetails;
-    width: 15px;
-    height: 15px;
-    z-index: 2;
-    border-radius: 50%;
+  @include center();
+  position: absolute;
+  content: "";
+  background-color: $wheelDetails;
+  width: 15px;
+  height: 15px;
+  z-index: 2;
+  border-radius: 50%;
 }
 .wheel-item {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 50%;
-    transform-origin: center left;
-    transform: translateY(-50%) rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
-  
-    color: $wheelLighterColor;
-    text-align: right;
-    padding: 0 10px 0 50px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    p {
-        @include uppercase-secondary();
-        margin-top: 17px;
-        margin-right: 20px;
-        font-size: 10px;
-    }
-    img {
-        height: 50px;
-    }
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  transform-origin: center left;
+  transform: translateY(-50%)
+    rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
+
+  color: $wheelLighterColor;
+  text-align: right;
+  padding: 0 10px 0 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  p {
+    @include uppercase-secondary();
+  color: $wheelLighterColor;
+
+    margin-top: 17px;
+    margin-right: 20px;
+    font-size: 10px;
+  }
+  img {
+    height: 50px;
+  }
 }
 .wheel-item:before {
-    @include center();
-    content: '';
-    position: absolute;
-    z-index: -1;
-    opacity: 0.25;
-  
-    border: solid transparent calc(calc((#{$sliceWidth} / var(--nb-item)) - #{$sliceSpacing}) / 2);
-    border-left: solid transparent 0;
-    border-right: solid $wheelLighterColor calc(#{$wheelSize} / 2);
+  @include center();
+  content: "";
+  position: absolute;
+  z-index: -1;
+  opacity: 0.25;
+
+  border: solid transparent
+    calc(calc((#{$sliceWidth} / var(--nb-item)) - #{$sliceSpacing}) / 2);
+  border-left: solid transparent 0;
+  border-right: solid $wheelLighterColor calc(#{$wheelSize} / 2);
 }
 
 //Admin file upload
 .progress-bar {
-    height: 5px;
-    margin-top: 20px;
-    background: $text;
+  height: 5px;
+  margin-top: 20px;
+  background: $text;
 }
 form {
-    @include flex-dir(column);
-    align-items: center;
-    padding: 50px 0;
+  @include flex-dir(column);
+  align-items: center;
+  padding: 50px 0;
 }
 .file-input {
-    width: 100%;
-    height: auto;
-    padding: 15px 0;
-    margin: 0 auto;
-    width: 50px;
+  width: 100%;
+  height: auto;
+  padding: 15px 0;
+  margin: 0 auto;
+  width: 50px;
 }
 .file-input::-webkit-file-upload-button {
-    visibility: hidden;
+  visibility: hidden;
 }
 .file-input::before {
-    content: '+';
-    border-radius: 50% !important;
+  content: "+";
+  border-radius: 50% !important;
+  color: $background;
+  background: $text;
+  padding: 8px 15px 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+//admin register & login
+.register,
+.login {
+  margin: 20vh auto;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $toolbarBg;
+  box-shadow: $lightShadow;
+  border-radius: 10px;
+  padding: 50px 10px 70px;
+  input {
+    @include uppercase-secondary();
+    @include buttons-inputs();
+    border-radius: 10px;
+    width: 70%;
+    margin: 15px auto;
+    padding: 3px 7px;
+  }
+  button {
+    @include uppercase-secondary();
+    @include buttons-inputs();
+    padding: 3px 30px;
+    margin-top: 15px;
+    width: fit-content;
+    height: fit-content;
     color: $background;
-    background: $text;
-    padding: 8px 15px 10px;
-    cursor: pointer;
-    font-size: 20px;
+    background-color: $text;
+    margin-bottom: 20px;
+  }
+  p,
+  a {
+    @include uppercase-secondary();
+  }
 }
 
 //Masonry view
 .masonry-container {
-    display: flex;
-    margin-top: 40px;
-    .title-masonry, .second-masonry {
-        width: 50%;
-    }
-    h1 {
-        font-size: 130px;
-    }
-    .second-masonry {
-        margin-left: 10px;
-    }
+  display: flex;
+  margin-top: 40px;
+  padding-bottom: 100px;
+  .title-masonry,
+  .second-masonry {
+    width: 50%;
+  }
+  h1 {
+    font-size: 130px;
+  }
+  .second-masonry {
+    margin-left: 10px;
+  }
 }
 .masonry-wrapper {
-    column-count: 3;
-    column-gap: 10px;
-    .masonry-item {
-        @include flex-dir(row);
-        @include align-justify(center, center);
-        margin: 0;
-        grid-template-rows: 1fr auto;
-        margin-bottom: 10px;
-        break-inside: avoid;
-        .masonry-content {
-            max-width: 100%;
-            width: 100%;
-            display: block;
-            border-radius: 15px;
-        }
+  column-count: 3;
+  column-gap: 10px;
+  .masonry-item {
+    @include flex-dir(row);
+    @include align-justify(center, center);
+    margin: 0;
+    grid-template-rows: 1fr auto;
+    margin-bottom: 10px;
+    break-inside: avoid;
+    .masonry-content {
+      max-width: 100%;
+      width: 100%;
+      display: block;
+      border-radius: 15px;
     }
+  }
 }
 .masonry-item > .masonry-content {
-    grid-row: 1 / -1;
-    grid-column: 1;
+  grid-row: 1 / -1;
+  grid-column: 1;
 }
 .delete-button {
-    margin: 10px auto 40x;
-    border-radius: 20px;
-    padding: 4px 20px;
-    color: $background;
-    background: $text;
-    border: none;
-    position: absolute;
+  margin: 10px auto 40x;
+  border-radius: 20px;
+  padding: 4px 20px;
+  color: $background;
+  background: $text;
+  box-shadow: $lightShadow;
+  border: none;
+  position: absolute;
 }
 
 //Chart maker
 .chart-maker {
-    margin-left: 0;
-    height: 100%;
-    position: absolute;
-    min-height: 100vh;
-    width: 100%;
-    top: 0;
-    .back {
-        @include flex-dir(row);
-        align-items: center;
-        margin: 100px auto 30px;
+  margin-left: 0;
+  height: 100%;
+  position: absolute;
+  min-height: 100vh;
+  width: 100%;
+  top: 0;
+  .back {
+    @include flex-dir(row);
+    align-items: center;
+    margin: 100px auto 30px;
+    img {
+      width: 12px;
+      height: auto;
+    }
+    h6 {
+      @include uppercase-secondary();
+      font-size: 15px;
+      margin: 0;
+    }
+  }
+  h2 {
+    @include uppercase-secondary();
+    font-size: 18px;
+    margin: 0;
+  }
+  .all-icons {
+    @include buttons-inputs();
+    margin-top: 30px;
+    padding: 5px 23px;
+    height: 10%;
+    .icons {
+      @include align-justify(center, center);
+      display: flex;
+      flex-wrap: wrap;
+      button:disabled {
         img {
-            width: 12px;
-            height: auto;
+          opacity: 0.3;
         }
-        h6 {
-            @include uppercase-secondary();
-            font-size: 15px;
-            margin: 0;
-        }
-    }    
-    h2 {
-        @include uppercase-secondary();
-        font-size:18px;
-        margin: 0;
+      }
+      img {
+        @include small-icon();
+      }
     }
-    .all-icons {
+  }
+  .toggle-symbol-mode {
+    margin: 20px 0 10px;
+    padding: 0;
+  }
+  .toggle-knitting-mode {
+    margin: 0 0 20px;
+    padding: 0;
+    .knitting-mode-rows {
+      div {
         @include buttons-inputs();
-        margin-top: 30px;
-        padding: 5px 23px;
-        height: 10%;
-        .icons {
-            @include align-justify(center, center);
-            display: flex;
-            flex-wrap: wrap;
-            button:disabled {
-                img {
-                    opacity: 0.3;
-                }
-            }
-            img {
-                @include small-icon();
-            }
-        }
+        padding: 5px 10px;
+        margin: 0 10px;
+      }
     }
-    .toggle-symbol-mode {
-        margin: 20px 0 10px;
-        padding: 0;
+  }
+  .toggle-and-title {
+    @include flex-row-space-between();
+    align-items: center;
+    margin-bottom: 10px;
+    button:disabled {
+      opacity: 0.3;
     }
-    .toggle-knitting-mode {
-        margin: 0 0 20px;
-        padding: 0;
-        .knitting-mode-rows {
-            div {
-                @include buttons-inputs();
-                padding: 5px 10px;
-                margin: 0 10px;
-            }
-        }
+    .switch {
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      position: relative;
     }
-    .toggle-and-title {
-        @include flex-row-space-between();
-        align-items: center;
-        margin-bottom: 10px;
-        .switch {
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-            position: relative;
-        }
-        svg {
-            height: 27px;
-            color: $text;
-        }
+    svg {
+      height: 27px;
+      color: $text;
     }
-    .toggle-symbol-mode img, .toggle-knitting-mode img {
-        padding: 0;
-        width: 20px;
-        margin: 5px;
-    }
+  }
+  .toggle-symbol-mode img,
+  .toggle-knitting-mode img {
+    padding: 0;
+    width: 20px;
+    margin: 5px;
+  }
 }
 .toolbar {
-    animation: animation-slide-in-left 3s;
-    background-color: $toolbarBg;
-    z-index: 10;
-    min-height: 100%;
-    position: absolute;
-    padding-left: 100px;
-    padding-bottom: 50px;
-    box-shadow: 0 0 30px #5050505d;
-    .back-col-row {
-        padding: 0;
+  animation: animation-slide-in-left 3s;
+  background-color: $toolbarBg;
+  z-index: 10;
+  min-height: 100%;
+  position: absolute;
+  padding-left: 100px;
+  padding-bottom: 50px;
+  box-shadow: 0 0 30px #5050505d;
+  .back-col-row {
+    padding: 0;
+  }
+  .columns-rows {
+    margin-top: 15px;
+    @include flex-dir(row);
+    #cols,
+    #rows {
+      @include uppercase-secondary();
+      @include buttons-inputs();
+      border-radius: 10px;
+      width: 70%;
+      margin: 0 auto;
+      padding: 3px 7px;
     }
-    .columns-rows {
-        margin-top: 15px;
-        @include flex-dir(row);
-        #cols, #rows {
-            @include uppercase-secondary();
-            @include buttons-inputs();
-            border-radius: 10px;
-            width: 70%;
-            margin: 0 auto;
-            padding: 3px 7px;
-        }
-        label {
-            font-size:15px;
-        }
+    label {
+      font-size: 15px;
     }
-    .colors {
-        margin-top: 20px;
-        padding: 0;
-        .pick-color {
-            @include flex-row-space-between();
-        }
-        .picked-colors {
-            @include flex-row-space-between();
-            margin-top: 10px;
-            .circle-picker {
-                width: fit-content !important;
-                max-width: 90%;
-            }
-            .chrome-div {
-                display: contents;
-            }
-            .chrome-picker {
-                font-family: $secondaryFont;
-                position: absolute;
-                margin-top: 30px;
-                box-shadow: $lightShadow !important;
-                right: 55px;
-                z-index: 10;
-                animation: fadein 0.5s;
-            }
-            button {
-                @include x-button(25px, 22px, 3px 5px 7px 5px);
-                margin-top: 3px;
-            }
-        }
-    }        
+  }
+  .colors {
+    margin-top: 20px;
+    padding: 0;
+    .pick-color {
+      @include flex-row-space-between();
+    }
+    .picked-colors {
+      @include flex-row-space-between();
+      margin-top: 10px;
+      .circle-picker {
+        width: fit-content !important;
+        max-width: 90%;
+      }
+      .chrome-div {
+        display: contents;
+      }
+      .chrome-picker {
+        font-family: $secondaryFont;
+        position: absolute;
+        margin-top: 30px;
+        box-shadow: $lightShadow !important;
+        right: 55px;
+        z-index: 10;
+        animation: fadein 0.5s;
+      }
+      button {
+        @include x-button(25px, 22px, 4px 5px 7px 5px);
+        margin-top: 3px;
+      }
+    }
+  }
 }
 
 label {
-    @include uppercase-secondary();
-    font-size: 20px;
+  @include uppercase-secondary();
+  font-size: 20px;
 }
-#title, select {
-    @include buttons-inputs();
-    font-family: $secondaryFont;
-    width: 100%;
-    margin: 0 auto;
-    padding: 3px 7px;
+#title,
+select {
+  @include buttons-inputs();
+  font-family: $secondaryFont;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3px 7px;
 }
 select {
-    padding: 0 7px;
+  padding: 0 7px;
 }
 
 button {
-    border: none;
-    background: transparent;
-    width: max-content;
+  border: none;
+  background: transparent;
+  width: max-content;
 }
 
 .active {
-    visibility: visible;
-    margin: top 0;
-    animation: fadein 0.5s linear;
+  visibility: visible;
+  margin: top 0;
+  animation: fadein 0.5s linear;
 }
 .inactive {
-    visibility: hidden;
-    animation: fadeout 0.5s linear;
-    transition: visibility 0.5s linear;
+  visibility: hidden;
+  animation: fadeout 0.5s linear;
+  transition: visibility 0.5s linear;
 }
 
-.random-chart, .download {
-    @include uppercase-secondary();
-    @include buttons-inputs();
-    padding: 5px 15px 5px 5px;
-    margin: 10px 0 20px;
-    width: fit-content;
-    height: fit-content;
-    color: $text;
-    img {
-        @include small-icon();
-        margin: 0 !important;
-    }
+.random-chart,
+.download {
+  @include uppercase-secondary();
+  @include buttons-inputs();
+  padding: 5px 15px 5px 5px;
+  margin: 10px 0 20px;
+  width: fit-content;
+  height: fit-content;
+  color: $text;
+  img {
+    @include small-icon();
+    margin: 0 !important;
+  }
 }
 .toolbar-bottom-buttons {
-    padding: 0;
+  padding: 0;
 }
 
 .col-lg-8 {
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  #grid {
+    @include align-justify(flex-start, space-around);
+    margin: 10% 10% auto;
+    background-color: $background;
+    min-width: 100%;
+    display: flex;
+  }
+  .rows {
+    @include flex-dir(column);
+    @include align-justify(center, space-between);
+    padding: 40px;
     position: absolute;
-    #grid {
-        
-        @include align-justify(flex-start, space-around);
-        margin: 10% 10% auto;
-        background-color: $background;
-        min-width: 100%;
-        display: flex;
-    }
-    .rows {
-        @include flex-dir(column);
-        @include align-justify(center, space-between);
-        padding: 40px;
-        position: absolute;
-    }
+  }
 }
 
 .rendered-row {
-    @include flex-dir(row);
-    width: fit-content;
-    .stich {
-        border: 1px solid #e2e2e2;
-        text-align: center;
-    }
-    .stich::selection {
-        background: transparent;
-    }
+  @include flex-dir(row);
+  width: fit-content;
+  .stich {
+    border: 1px solid #e2e2e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stich::selection {
+    background: transparent;
+  }
 }
 
-//React select 
+//React select
 .selected {
-    opacity: 1 !important;
+  opacity: 1 !important;
 }
 .rCS154w68a {
-    border: 1px solid rgb(100, 111, 114) !important;
-    background: rgba(100, 111, 114, 0.3) !important;
+  border: 1px solid rgb(100, 111, 114) !important;
+  background: rgba(100, 111, 114, 0.3) !important;
 }
 
 //selected row
 .column {
-    display: flex;
+  display: flex;
 }
 
-#tooltip, button, .wrapper, .knitting-mode-rows {
-    @include align-justify(center, center);
-    display: flex;
+#tooltip,
+button,
+.wrapper,
+.knitting-mode-rows {
+  @include align-justify(center, center);
+  display: flex;
 }
 
 //Toolbar tooltips
 .wrapper {
-    margin-left: 30px;
-    animation: fadein 1s;
-    position: absolute;
-    .tooltip-label {
-        padding: 3px 8px;
-        color: rgb(116, 106, 106);
-        background-color: rgb(228, 228, 228);
-        box-shadow: $lightShadow;
-        border-radius: 4px;
-        font-size: 10px;
-    }
+  margin-left: 50px;
+  position: absolute;
+  margin-top: 50px;
+  .tooltip-label {
+    padding: 1px 5px;
+    color: rgb(116, 106, 106);
+    background-color: rgb(228, 228, 228);
+    box-shadow: $lightShadow;
+    border-radius: 4px;
+    font-size: 10px;
+  }
 }
-@media screen and (max-width: 1024px) {
-
+@media screen and (max-width: 991px) {
+  .masonry-container h1 {
+    font-size: 100px;
+  }
 }
 
 @media screen and (max-width: 767px) {
-    .nav-wheel.active {
-        z-index: 15;
+  .nav-wheel.active {
+    z-index: 15;
+  }
+  label {
+    font-size: 15px;
+  }
+  .nav-wheel {
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 90%;
+  }
+  .col-lg-8,
+  .toolbar {
+    position: relative;
+  }
+  #grid {
+    min-width: auto !important;
+    margin: auto !important;
+  }
+  .masonry-container {
+    h1 {
+      font-size: 70px;
     }
-    label {
-        font-size: 15px;
+    .title-masonry {
+      width: 100%;
     }
-    .nav-wheel {
-        background-color: rgba(255, 255, 255, 0.8);
-        width: 90%;
+  }
+  .back-col-row,
+  .colors,
+  .all-icons {
+    margin: 0 auto;
+  }
+
+  #title,
+  #cols,
+  #rows,
+  select {
+    height: 25px;
+  }
+  .chart-maker {
+    .row {
+      background-color: $toolbarBg;
+      padding-left: initial;
+      margin: 0 auto;
     }
-    .col-lg-8, .toolbar {
-        position: relative;
+    .row > * {
+      padding: initial;
     }
-    #grid {
-        min-width: auto !important;
-        margin: auto !important;
-    }
-    .back-col-row, .colors, .all-icons {
-        margin: 0 auto;
+    h2 {
+      font-size: 15px;
     }
 
-    #title, #cols, #rows, select {
+    .toggle-and-title {
+      margin-bottom: 10px;
+    }
+    .toggle-symbol-mode,
+    .toggle-knitting-mode {
+      margin: 20px auto;
+      width: 17%;
+    }
+    .knitting-mode-rows {
+      div {
         height: 25px;
+        padding: 0 10px !important;
+      }
     }
-    .chart-maker {
-        .row {
-            background-color: $toolbarBg;
-            padding-left: initial;
-            margin: 0 auto;
-        }
-        .row>* {
-            padding: initial;
-        }
-        h2 {
-            font-size: 15px;
-        }
-
-        .toggle-and-title {
-            margin-bottom: 10px;
-            button:disabled {
-                svg {
-                    opacity: 0.3;
-                }
-            }
-        }
-        .toggle-symbol-mode, .toggle-knitting-mode {
-            margin: 20px auto!important;
-            width: 30%;
-        }
-        .knitting-mode-rows {
-            div {
-            height: 25px;
-            padding: 0 10px !important;
-            }
-        }
-        .toolbar {
-            .all-icons {
-                padding: 5px;
-                margin-top: 20px;
-                height: auto;
-            }
-            .columns-rows {
-                margin-top: 10px;
-            }
-            .colors .picked-colors button {
-                margin-top: 0 !important;
-                height: 23px !important;
-                width: 23px !important;
-            }
-        }
-        .circle-picker {
-            max-width: 100% !important;
-            .chrome-picker {
-                right: 65px;
-            }
-        }
-        .circle-picker span div {
-            width: 23px !important;
-            height: 23px !important;
-        }
-        .toolbar-bottom-buttons {
-            @include flex-dir(row);
-        }
-        .random-chart, .download {
-            margin: 10px auto 20px;
-            width: 35%;
-            font-size: 15px;
-            padding: 2px 15px 2px 5px;
-        }
+    .toolbar {
+      .all-icons {
+        padding: 5px;
+        margin-top: 20px;
+        height: auto;
+      }
+      .columns-rows {
+        margin-top: 10px;
+      }
+      .colors .picked-colors button {
+        margin-top: 0 !important;
+        height: 23px !important;
+        width: 23px !important;
+      }
+    }
+    .circle-picker {
+      max-width: 100% !important;
+      .chrome-picker {
+        right: 65px;
+      }
+    }
+    .circle-picker span div {
+      width: 23px !important;
+      height: 23px !important;
+    }
+    .toolbar-bottom-buttons {
+      @include flex-dir(row);
+    }
+    .random-chart,
+    .download {
+      margin: 10px auto 20px;
+      width: 35%;
+      font-size: 15px;
+      padding: 2px 15px 2px 5px;
     }
   }
+}
 
-  @media screen and (max-width: 576px) {
-    .wheel-container {
-        width: calc(#{$wheelSizeSmall} + 2 * 3px);
-        height: calc(#{$wheelSizeSmall} + 2 * 3px);
-    }
-    .wheel {
-        width: $wheelSizeSmall;
-        height: $wheelSizeSmall;
-    } 
-    .wheel-item {
-        img {
-            height:30px;
-        }
-    }
-    .wheel-item:before {
-        border: solid transparent calc(calc((#{$sliceWidth} / var(--nb-item)) - #{$sliceSpacing}) / 2);
-        border-right: solid $wheelLighterColor calc(#{$wheelSize} / 2);
-    } 
+@media screen and (max-width: 576px) {
+  form {
+    padding: 0 0 20px;
   }
+
+  nav {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    a {
+      padding: 0;
+    }
+  }
+  .wheel-container {
+    width: calc(#{$wheelSizeSmall} + 2 * 3px);
+    height: calc(#{$wheelSizeSmall} + 2 * 3px);
+  }
+  .wheel {
+    width: $wheelSizeSmall;
+    height: $wheelSizeSmall;
+  }
+  .wheel-item {
+    img {
+      height: 30px;
+    }
+  }
+  .wheel-item:before {
+    border: solid transparent
+      calc(calc((#{$sliceWidth} / var(--nb-item)) - #{$sliceSpacing}) / 2);
+    border-right: solid $wheelLighterColor calc(#{$wheelSize} / 2);
+  }
+  .toggle-symbol-mode,
+  .toggle-knitting-mode {
+    margin: 5px auto !important;
+    width: 80% !important;
+  }
+  .register,
+  .login {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .masonry-wrapper {
+    column-count: 2;
+  }
+  .masonry-container h1 {
+    font-size: 50px;
+  }
+  .wheel-container {
+    width: calc(200px + 2 * 3px);
+    height: calc(200px + 2 * 3px);
+  }
+  .nav-wheel {
+    h2 {
+      font-size: 25px;
+      margin: 60px 20px 40px;
+    }
+    button {
+      height: 25px;
+      width: 25px;
+      font-size: 20px;
+      padding: 5px 8px 8px 8px;
+    }
+  }
+  .wheel {
+    width: 200px;
+    height: 200px;
+    border: solid #7f8a8e 3px;
+  }
+  .wheel-item {
+    img {
+      height: 20px;
+    }
+    p {
+      margin-right: 10px;
+      font-size: 8px;
+    }
+  }
+  .wheel-item:before {
+    border: solid transparent
+      calc(calc((#{$sliceWidth} / var(--nb-item)) - #{$sliceSpacing}) / 2);
+    border-right: solid $wheelLighterColor calc(315px / 2);
+  }
+}

@@ -1,4 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
+import $ from "jquery";
+import Tooltip from "../comps/Tooltip";
+
 //For downloading the chart
 import html2canvas from "html2canvas";
 //Color pickers
@@ -6,8 +9,6 @@ import { ChromePicker, CirclePicker } from "react-color";
 //For selecting the stiches
 import Selecto from "react-selecto";
 
-import $ from "jquery";
-import Tooltip from "../comps/Tooltip";
 //Hook to handle outside clicks & keypresses
 import useOutsideClick from "../hooks/useOutsideClick";
 import useKeypress from "../hooks/useKeypress";
@@ -16,6 +17,7 @@ import useKeypress from "../hooks/useKeypress";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
+
 //Icons
 import back from "../img/left.png";
 import removeColor from "../img/removeColors.png";
@@ -34,7 +36,6 @@ import removeBorderColor from "../img/removeBorderColor.png";
 import Outline from "../img/outline.png";
 import noSymbolColor from "../img/removeSymbolColors.png";
 import removeOutline from "../img/removeOutline.png";
-import select from "../img/selection.png";
 
 function Create() {
   //Column, row, title states
@@ -77,7 +78,7 @@ function Create() {
   let [dragging, setDragging] = useState(false);
   let [styles, setStyles] = useState({});
 
-  let [borderColor, setBorderColor] = useState("1px solid " + circleColor);
+  let [borderColor, setBorderColor] = useState("#e2e2e2");
   let renderedRow = document.querySelectorAll(".rendered-row");
   let element = document.getElementsByClassName("stich");
   let [symbol, setSymbol] = useState("Ⅰ");
@@ -169,22 +170,25 @@ function Create() {
       setShowRow(showRow);
       setKnittingMode(true);
     } else {
-      for (let i = 0; i < rows; i++) {
-        let renderedRow = document.querySelectorAll(".rendered-row");
-        renderedRow[knittedRow - 1].style.border = "4px solid #992E2B";
-      }
+      let renderedRow = document.querySelectorAll(".rendered-row");
+      let renderedStyle = renderedRow[knittedRow - 1].style;
+      renderedStyle.border = "4px solid #E0AB11";
+      renderedStyle.borderRadius = "5px";
+      renderedStyle.boxShadow = "0 0 20px 0 #5050505d";
     }
   };
   //Handle moving up the chart
   const nextKnittingRow = () => {
     knittedRow--;
     setKnittedRow(knittedRow);
-    for (let i = 0; i < rows; i++) {
-      if (knittedRow >= 0) {
-        renderedRow[knittedRow].style.border = "none";
-        renderedRow[knittedRow].style.marginLeft = 0;
-      }
+
+    if (knittedRow >= 0) {
+      let renderedStyle = renderedRow[knittedRow].style;
+      renderedStyle.border = "none";
+      renderedStyle.boxShadow = "none";
+      renderedStyle.marginLeft = 0;
     }
+
     showRow++;
     setShowRow(showRow);
     activateKnittingMode();
@@ -193,10 +197,12 @@ function Create() {
   const prevKnittingRow = () => {
     knittedRow++;
     setKnittedRow(knittedRow);
-    for (let i = 0; i < rows; i++) {
-      renderedRow[knittedRow - 2].style.border = "none";
-      renderedRow[knittedRow - 2].style.marginLeft = 0;
-    }
+
+    let renderedStyle = renderedRow[knittedRow - 2].style;
+    renderedStyle.border = "none";
+    renderedStyle.boxShadow = "none";
+    renderedStyle.marginLeft = 0;
+
     showRow--;
     setShowRow(showRow);
     activateKnittingMode();
@@ -207,6 +213,7 @@ function Create() {
       for (let i = 0; i < rows; i++) {
         let renderedRow = document.querySelectorAll(".rendered-row");
         renderedRow[i].style.border = "none";
+        renderedRow[i].style.boxShadow = "none";
         renderedRow[i].style.margin = "initial";
       }
     }
@@ -216,13 +223,15 @@ function Create() {
   const mouseUp = () => {
     setMouseIsDown(false);
   };
+
+  
   const mouseDown = (e, backgroundColor) => {
     setMouseIsDown(true);
     //For selecting the first element when the drag starts!
     if (selected && symbolMode && draggable && dragging) {
       e.target.style.backgroundColor = backgroundColor;
     }
-    if (!symbolMode && draggable && dragging) {
+    if (!symbolMode && selected && draggable && dragging) {
       e.target.innerHTML = symbol;
     }
   };
@@ -237,10 +246,10 @@ function Create() {
   };
   //Handle background color or symbol change onClick!!!
   const clickChanges = (e, backgroundColor) => {
-    if (symbolMode && !selected && draggable && dragging) {
+    if (symbolMode && selected && draggable && !dragging) {
       e.target.style.backgroundColor = backgroundColor;
     }
-    if (!symbolMode && draggable && !dragging) {
+    if (!symbolMode && selected && draggable && !dragging) {
       e.target.innerHTML = symbol;
     }
   };
@@ -269,7 +278,7 @@ function Create() {
   //Remove all the colors
   const removeColors = () => {
     for (let i = 0; i < element.length; i++) {
-      element[i].style.backgroundColor = "#fff";
+      element[i].style.backgroundColor = "#ffffff";
     }
   };
   //push color into colors array
@@ -418,10 +427,10 @@ function Create() {
   };
 
   //Start drag
-  const dragStart = (e) => {
+  const dragStart = (e, screenX, screenY) => {
     if (!draggable) {
-      setDiffX(e.screenX - e.currentTarget.getBoundingClientRect().left);
-      setDiffY(e.screenY - e.currentTarget.getBoundingClientRect().top);
+      setDiffX(screenX - e.currentTarget.getBoundingClientRect().left);
+      setDiffY(screenY - e.currentTarget.getBoundingClientRect().top);
       setDragging(true);
     }
   };
@@ -434,10 +443,11 @@ function Create() {
   };
 
   //While dragging
-  const drag = (e) => {
+  const drag = (e, screenX, screenY) => {
     if (dragging && !draggable) {
-      let left = e.screenX - diffX;
-      let top = e.screenY - diffY;
+      let left = screenX - diffX;
+      let top = screenY - diffY;
+
       setStyles({
         left: left,
         top: top,
@@ -447,7 +457,7 @@ function Create() {
 
   //Restart
   const restart = () => {
-    initBorder("lightgrey");
+    initBorder("#e2e2e2");
     removeColors();
     removeSymbols();
     setSelected(true);
@@ -472,11 +482,17 @@ function Create() {
       pushColor(colors);
     }
   });
-
+  /*
   useOutsideClick(gridRefTwo, () => {
     if (!selected) {
       setSelected((selected) => !selected);
       handleSelect();
+    }
+  });
+  */
+  useOutsideClick(gridRefTwo, () => {
+    if (!draggable) {
+      setDraggable((draggable) => !draggable);
     }
   });
 
@@ -498,16 +514,26 @@ function Create() {
     }
   });
 
+  //Return grid rows
   const returnRows = stichRow.map((rowI) => {
     return (
       <span key={rowI++}>
-        <div className={"rendered-row nr" + rowI}>
+        <div
+          className={"rendered-row nr" + rowI}
+          style={{ fontSize: stichHeightWidth - 10 }}
+        >
           {stichCol.map((colI) => {
             return (
               <span
                 className={"stich"}
                 style={stichStyle}
                 key={colI++}
+                onTouchStart={(e) => {
+                  mouseDown(e, circleColor);
+                }}
+                onTouchMove={(e) => {
+                  dragChanges(e, circleColor);
+                }}
                 onMouseDown={(e) => {
                   mouseDown(e, circleColor);
                 }}
@@ -517,7 +543,9 @@ function Create() {
                 onMouseOver={(e) => {
                   dragChanges(e, circleColor);
                 }}
-                onClick={(e) => clickChanges(e, circleColor)}
+                onClick={(e) => {
+                  clickChanges(e, circleColor);
+                }}
               ></span>
             );
           })}
@@ -532,7 +560,7 @@ function Create() {
         <div className="col-lg-4 col-md-5 col-sm-12 toolbar row">
           <div className="col-10 back-col-row">
             <div className="back">
-              <img src={back} />
+              <img src={back} alt={"Back"} />
               <h6>Back</h6>
             </div>
             <div className="col-12">
@@ -615,37 +643,37 @@ function Create() {
 
           <div className="all-icons col-10">
             <div className="icons">
-              <button
-                onClick={() => {
-                  initBorder("lightgrey");
-                }}
-              >
-                <Tooltip content="Remove added border color" direction="right">
-                  <img src={removeBorderColor} />
+              <button onClick={removeColors}>
+                <Tooltip content="Remove chart colors" direction="right">
+                  <img src={removeColor} alt={"Remove chart colors"} />
                 </Tooltip>
               </button>
 
               <button onClick={changeBorderColor}>
                 <Tooltip content="Add border color" direction="right">
-                  <img src={borderColors} />
+                  <img src={borderColors} alt={"Add border color"} />
                 </Tooltip>
               </button>
 
-              <button onClick={removeColors}>
-                <Tooltip content="Remove chart colors" direction="right">
-                  <img src={removeColor} />
-                </Tooltip>
-              </button>
-
-              <button onClick={restart}>
-                <Tooltip content="Start from scratch" direction="right">
-                  <img src={startOver} />
+              <button
+                onClick={() => {
+                  initBorder("#e2e2e2");
+                }}
+              >
+                <Tooltip content="Remove added border color" direction="right">
+                  <img src={removeBorderColor} alt={"Remove border color"} />
                 </Tooltip>
               </button>
 
               <button onClick={() => zoom(stichHeightWidth + 5)}>
                 <Tooltip content="Zoom in" direction="right">
-                  <img src={zoomIn} />
+                  <img src={zoomIn} alt={"Zoom in"} />
+                </Tooltip>
+              </button>
+
+              <button onClick={() => zoom(stichHeightWidth - 5)}>
+                <Tooltip content="Zoom out" direction="right">
+                  <img src={zoomOut} alt={"Zoom out"} />
                 </Tooltip>
               </button>
 
@@ -657,7 +685,7 @@ function Create() {
                 disabled={!selected ? false : true}
               >
                 <Tooltip content="Flip horizontal" direction="right">
-                  <img src={flip} />
+                  <img src={flip} alt={"Flip horizontal"} />
                 </Tooltip>
               </button>
 
@@ -668,7 +696,7 @@ function Create() {
                 disabled={selected ? false : true}
               >
                 <Tooltip content="Drag canvas" direction="right">
-                  <img src={move} />
+                  <img src={move} alt={"Drag canvas"} />
                 </Tooltip>
               </button>
 
@@ -679,22 +707,7 @@ function Create() {
                 disabled={!selected ? false : true}
               >
                 <Tooltip content="Fill" direction="right">
-                  <img src={fill} />
-                </Tooltip>
-              </button>
-
-              <button
-                onClick={() => handleSelect()}
-                disabled={draggable ? false : true}
-              >
-                <Tooltip content="Select" direction="right">
-                  <img src={select} />
-                </Tooltip>
-              </button>
-
-              <button onClick={() => zoom(stichHeightWidth - 5)}>
-                <Tooltip content="Zoom out" direction="right">
-                  <img src={zoomOut} />
+                  <img src={fill} alt={"Fill"} />
                 </Tooltip>
               </button>
 
@@ -704,7 +717,7 @@ function Create() {
                 }}
               >
                 <Tooltip content="Change symbol color" direction="right">
-                  <img src={symbolColors} />
+                  <img src={symbolColors} alt={"Change symbol color"} />
                 </Tooltip>
               </button>
 
@@ -714,7 +727,7 @@ function Create() {
                 }}
               >
                 <Tooltip content="Initial symbol color" direction="right">
-                  <img src={noSymbolColor} />
+                  <img src={noSymbolColor} alt={"Initial symbol color"} />
                 </Tooltip>
               </button>
 
@@ -724,7 +737,7 @@ function Create() {
                 }}
               >
                 <Tooltip content="Remove symbols" direction="right">
-                  <img src={noSymbol} />
+                  <img src={noSymbol} alt={"Remove symbols"} />
                 </Tooltip>
               </button>
 
@@ -735,7 +748,7 @@ function Create() {
                 }}
               >
                 <Tooltip content="Add outline" direction="right">
-                  <img src={Outline} />
+                  <img src={Outline} alt={"Add outline"} />
                 </Tooltip>
               </button>
 
@@ -745,8 +758,38 @@ function Create() {
                 }}
               >
                 <Tooltip content="Remove outline" direction="right">
-                  <img src={removeOutline} />
+                  <img src={removeOutline} alt={"Remove outline"} />
                 </Tooltip>
+              </button>
+
+              <button onClick={restart}>
+                <Tooltip content="Start from scratch" direction="right">
+                  <img src={startOver} alt={"Start from scratch"} />
+                </Tooltip>
+              </button>
+            </div>
+          </div>
+
+          <div className="col-10 toggle-symbol-mode">
+            <div className="toggle-and-title">
+              <h2>Select</h2>
+              <button
+                onClick={() => handleSelect()}
+                disabled={draggable ? false : true}
+              >
+                <FontAwesomeIcon
+                  style={{
+                    visibility: selected ? "visible" : "hidden",
+                    position: "absolute",
+                  }}
+                  icon={faToggleOn}
+                />
+                <FontAwesomeIcon
+                  style={{
+                    visibility: !selected ? "visible" : "hidden",
+                  }}
+                  icon={faToggleOff}
+                />
               </button>
             </div>
           </div>
@@ -852,7 +895,7 @@ function Create() {
               }}
               disabled={selected ? false : true}
             >
-              <img src={getRandom} />
+              <img src={getRandom} alt={"Generate random chart"} />
               Generate Random chart
             </button>
 
@@ -862,7 +905,7 @@ function Create() {
                 handleDownloadImage();
               }}
             >
-              <img src={download} />
+              <img src={download} alt={"Download"} />
               Download as Image
             </button>
           </div>
@@ -894,8 +937,14 @@ function Create() {
               ref={gridRef}
               style={chartHeightWidth}
               className="rows selecto-area"
-              onMouseDown={(e) => dragStart(e)}
-              onMouseMove={(e) => drag(e)}
+              onMouseDown={(e) => dragStart(e, e.screenX, e.screenY)}
+              onMouseMove={(e) => drag(e, e.screenX, e.screenY)}
+              onTouchStart={(e) => {
+                dragStart(e, e.touches[0].screenX, e.touches[0].screenY);
+              }}
+              onTouchMove={(e) => {
+                drag(e, e.touches[0].screenX, e.touches[0].screenY);
+              }}
               onMouseUp={dragEnd}
               style={styles}
             >

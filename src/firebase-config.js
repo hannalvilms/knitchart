@@ -1,23 +1,29 @@
 // Import the functions you need from the SDKs you need
-import * as firebase from 'firebase/app';
-import 'firebase/storage';
-import 'firebase/firestore';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/storage';
+import 'firebase/compat/firestore';
+import { initializeApp } from 'firebase/app'
+import { GoogleAuthProvider, getAuth,  } from 'firebase/auth';
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDZeHRSIprrSiuw6shXpOGtQ0bPBMH0Gm0",
-  authDomain: "knitchart.firebaseapp.com",
-  databaseURL: "https://knitchart-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "knitchart",
-  storageBucket: "knitchart.appspot.com",
-  messagingSenderId: "548136610760",
-  appId: "1:548136610760:web:2c7d19fbf53d71377faefd"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: 'knitchart',
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGE_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig);
 const projectStorage = firebase.storage();
 const projectFirestore = firebase.firestore();
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
-export {projectStorage, projectFirestore, timestamp}
+const provider = new GoogleAuthProvider();
+const auth = getAuth(app)
+export {projectStorage, projectFirestore, timestamp, provider, auth}
  

@@ -29,7 +29,7 @@ const Wheel = (props) => {
                 {props.items.map((item, index) => (
                 <div className="wheel-item" key={index} style={{ '--item-nb': index }}>
                     <p>{item.name}</p>
-                    <img src={item.items}/>
+                    <img src={item.items} alt={props.name}/>
                 </div>
                 ))}
             </div>
