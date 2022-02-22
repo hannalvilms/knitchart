@@ -1005,6 +1005,23 @@ button,
   font-size: 10px;
 }
 
+.footer {
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+.footer h6 {
+  font-family: "Open Sans Condensed", sans-serif;
+  text-transform: uppercase;
+  color: #646f72;
+}
+
+.footer p {
+  font-family: "Open Sans Condensed", sans-serif;
+  color: #646f72;
+  font-size: 13px;
+}
+
 @media screen and (max-width: 991px) {
   .masonry-container h1 {
     font-size: 100px;

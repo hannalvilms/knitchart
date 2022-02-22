@@ -699,6 +699,19 @@ button,
     font-size: 10px;
   }
 }
+
+.footer {
+    text-align: center;
+    padding-bottom: 50px;
+    h6 {
+        @include uppercase-secondary();
+    }
+    p {
+        font-family: $secondaryFont;
+        color: $text;
+        font-size: 13px;
+    }
+}
 @media screen and (max-width: 991px) {
   .masonry-container h1 {
     font-size: 100px;
