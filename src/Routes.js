@@ -153,6 +153,11 @@ const AllRoutes = () => {
                 <h3 onClick={() => toggle(isShown, setIsShown)}>
                   Knitting Wheel
                 </h3>
+                {!isAuth && (
+                  <Link to="/knitchart/admin/login" className="nav-link">
+                    Admin Login
+                  </Link>
+                )}
                 {isAuth && (
                   <Link
                     className="nav-link"
@@ -216,6 +221,11 @@ const AllRoutes = () => {
                     >
                       Knitting Wheel
                     </h3>
+                    {!isAuth && (
+                      <Link to="/knitchart/admin/login" className="nav-link">
+                        Admin Login
+                      </Link>
+                    )}
                     {isAuth && (
                       <Link
                         className="nav-link"
