@@ -112,6 +112,7 @@ const Nav = () => {
       setIsShown((isShown) => !isShown);
     }
   });
+  console.log(window.innerWidth)
 
   //Keep user authenticated
   //UseEffect to render once
@@ -249,4 +250,5 @@ const Nav = () => {
     </>
   );
 };
+
 export default Nav;
