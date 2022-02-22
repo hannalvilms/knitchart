@@ -446,10 +446,12 @@ form {
       width: 12px;
       height: auto;
     }
-    h6 {
+    a {
       @include uppercase-secondary();
       font-size: 15px;
       margin: 0;
+      text-decoration: none;
+      cursor: pointer;
     }
   }
   h2 {

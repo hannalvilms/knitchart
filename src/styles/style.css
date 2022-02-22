@@ -572,12 +572,14 @@ form {
   height: auto;
 }
 
-.chart-maker .back h6 {
+.chart-maker .back a {
   font-family: "Open Sans Condensed", sans-serif;
   text-transform: uppercase;
   color: #646f72;
   font-size: 15px;
   margin: 0;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .chart-maker h2 {

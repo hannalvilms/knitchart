@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+
 import $ from "jquery";
 import Tooltip from "../comps/Tooltip";
 
@@ -561,7 +563,7 @@ function Create() {
           <div className="col-10 back-col-row">
             <div className="back">
               <img src={back} alt={"Back"} />
-              <h6>Back</h6>
+              <Link to='/knitchart'>Back</Link>
             </div>
             <div className="col-12">
               <label>Title</label>
