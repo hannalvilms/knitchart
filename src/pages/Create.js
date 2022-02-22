@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-
 import $ from "jquery";
 import Tooltip from "../comps/Tooltip";
+import Nav from "../comps/Nav"
 
 //For downloading the chart
 import html2canvas from "html2canvas";
@@ -557,6 +557,10 @@ function Create() {
   });
 
   return (
+    <>
+    <div className="container">
+      <Nav/>
+    </div>
     <div className="chart-maker">
       <div className="row">
         <div className="col-lg-4 col-md-5 col-sm-12 toolbar row">
@@ -956,6 +960,7 @@ function Create() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

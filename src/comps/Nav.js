@@ -1,33 +1,26 @@
 import React, { useRef, useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase-config";
+import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import { useWindowSize } from "./hooks/useWindowResize";
-import useOutsideClick from "./hooks/useOutsideClick";
-
-//Pages
-import Home from "./pages/Home";
-import Create from "./pages/Create";
-import Admin from "./pages/Admin";
-import Wheel from "./comps/Wheel";
+import { useWindowSize } from "../hooks/useWindowResize";
+import useOutsideClick from "../hooks/useOutsideClick";
+import Wheel from "../comps/Wheel";
 
 //Images
-import logo from "./img/knitchart-logo.png";
-import scarf from "./img/scarf.png";
-import cardigan from "./img/cardigan.png";
-import hat from "./img/hat.png";
-import pillow from "./img/pillow.png";
-import top from "./img/top.png";
-import socks from "./img/socks.png";
-import sweater from "./img/sweater.png";
-import xmasSweater from "./img/x-sweater.png";
-import mittens from "./img/mittens.png";
-import blanket from "./img/blanket.png";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import logo from "../img/knitchart-logo.png";
+import scarf from "../img/scarf.png";
+import cardigan from "../img/cardigan.png";
+import hat from "../img/hat.png";
+import pillow from "../img/pillow.png";
+import top from "../img/top.png";
+import socks from "../img/socks.png";
+import sweater from "../img/sweater.png";
+import xmasSweater from "../img/x-sweater.png";
+import mittens from "../img/mittens.png";
+import blanket from "../img/blanket.png";
 
-const AllRoutes = () => {
+const Nav = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState({});
   const [menuOpen, setMenuOpen] = useState(true);
@@ -133,8 +126,8 @@ const AllRoutes = () => {
   }, []);
 
   return (
-    <div>
-      <div className="container">
+    <>
+      <div>
         <div className="row">
           <nav className="col-12">
             <div className="navbar-header header-logo col-lg-5">
@@ -153,11 +146,6 @@ const AllRoutes = () => {
                 <h3 onClick={() => toggle(isShown, setIsShown)}>
                   Knitting Wheel
                 </h3>
-                {!isAuth && (
-                  <Link to="/knitchart/admin/login" className="nav-link">
-                    Admin Login
-                  </Link>
-                )}
                 {isAuth && (
                   <Link
                     className="nav-link"
@@ -221,11 +209,6 @@ const AllRoutes = () => {
                     >
                       Knitting Wheel
                     </h3>
-                    {!isAuth && (
-                      <Link to="/knitchart/admin/login" className="nav-link">
-                        Admin Login
-                      </Link>
-                    )}
                     {isAuth && (
                       <Link
                         className="nav-link"
@@ -263,18 +246,7 @@ const AllRoutes = () => {
         <h2>Out of knitting ideas? Spin the wheel!</h2>
         <Wheel items={wheelItems} />
       </div>
-
-      <Routes>
-        <Route path="/knitchart" element={<Home />} />
-        <Route path="/knitchart/create" element={<Create />} />
-        <Route path="/knitchart/admin" element={<Admin isAuth={isAuth} />} />
-        <Route path="/knitchart/admin/register" element={<Register />} />
-        <Route
-          path="/knitchart/admin/login"
-          element={<Login setIsAuth={setIsAuth} setUser={setUser} />}
-        />
-      </Routes>
-    </div>
+    </>
   );
 };
-export default AllRoutes;
+export default Nav;

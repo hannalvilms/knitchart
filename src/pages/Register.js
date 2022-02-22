@@ -4,6 +4,7 @@ import { auth } from "../firebase-config";
 import {
   createUserWithEmailAndPassword
 } from "firebase/auth";
+import Nav from "../comps/Nav"
 
 const Register = () => {
   const [registerEmail, setRegisterEmail] = useState("");
@@ -25,6 +26,7 @@ const Register = () => {
 
   return (
     <div className="container">
+      <Nav />
       <div className="row">
         <div className="register">
           <h3>Register admin</h3>

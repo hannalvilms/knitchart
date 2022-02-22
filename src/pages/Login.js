@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../firebase-config";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
+import Nav from "../comps/Nav"
 
 const Login = ({ setIsAuth, setUser }) => {
   let navigate = useNavigate();
@@ -30,6 +31,7 @@ const Login = ({ setIsAuth, setUser }) => {
 
   return (
     <div className="container">
+      <Nav />
       <div className="row">
         <div className="login">
           <h3>Log in</h3>
@@ -48,10 +50,10 @@ const Login = ({ setIsAuth, setUser }) => {
             }}
           />
           <button onClick={login}>Login</button>
-          {/* <p>
+          <p>
             Don't have an admin account?{" "}
             <Link to={"/knitchart/admin/register"}>Sign up</Link>
-          </p> */}
+          </p>
         </div>
       </div>
     </div>
