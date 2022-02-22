@@ -48,10 +48,10 @@ const Login = ({ setIsAuth, setUser }) => {
             }}
           />
           <button onClick={login}>Login</button>
-          <p>
+          {/* <p>
             Don't have an admin account?{" "}
             <Link to={"/knitchart/admin/register"}>Sign up</Link>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
